@@ -8,20 +8,19 @@ import {
   deleteMood
 } from "../features/mood/moodSlice";
 
-import "../styles/Member3.css";
-
 const today = () => {
   const d = new Date();
   return new Date(d.getTime() - d.getTimezoneOffset() * 60000)
-    .toISOString().slice(0, 10);
+    .toISOString()
+    .slice(0, 10);
 };
 
 const moods = [
-  { name: "Great", emoji: "😄" },
-  { name: "Good", emoji: "🙂" },
-  { name: "Okay", emoji: "😐" },
-  { name: "Low", emoji: "😔" },
-  { name: "Bad", emoji: "😣" }
+  { name: "Great", description: "Feeling excellent" },
+  { name: "Good", description: "Feeling positive" },
+  { name: "Okay", description: "Doing alright" },
+  { name: "Low", description: "Feeling down" },
+  { name: "Bad", description: "Having a hard day" }
 ];
 
 const initialForm = {
@@ -35,7 +34,7 @@ export default function MoodJournal() {
   const dispatch = useDispatch();
 
   const entries = useSelector(
-    state => state.mood.entries || []
+    state => state.mood?.entries || []
   );
 
   const [form, setForm] = useState(initialForm);
@@ -43,32 +42,45 @@ export default function MoodJournal() {
 
   const todayEntries = entries
     .filter(entry => entry.date === today())
-    .sort((a, b) =>
-      new Date(b.createdAt) - new Date(a.createdAt)
+    .sort(
+      (a, b) =>
+        new Date(b.createdAt || 0) - new Date(a.createdAt || 0)
     );
+
+  const updateForm = (field, value) => {
+    setForm(previous => ({
+      ...previous,
+      [field]: value
+    }));
+  };
 
   const handleSubmit = e => {
     e.preventDefault();
 
-    const selectedMood = moods.find(
-      m => m.name === form.mood
-    );
-
     const payload = {
       ...form,
-      emoji: selectedMood.emoji,
       energy: Number(form.energy),
       stress: Number(form.stress),
-      date: today()
+      date: today(),
+      createdAt: editingId
+        ? entries.find(entry => entry.id === editingId)?.createdAt
+        : new Date().toISOString()
     };
 
     if (editingId) {
-      dispatch(updateMood({
-        id: editingId,
-        ...payload
-      }));
+      dispatch(
+        updateMood({
+          id: editingId,
+          ...payload
+        })
+      );
     } else {
-      dispatch(addMood(payload));
+      dispatch(
+        addMood({
+          ...payload,
+          createdAt: new Date().toISOString()
+        })
+      );
     }
 
     setForm(initialForm);
@@ -96,236 +108,287 @@ export default function MoodJournal() {
     setForm(initialForm);
   };
 
+  const deleteEntry = id => {
+    dispatch(deleteMood(id));
+
+    if (editingId === id) {
+      cancelEdit();
+    }
+  };
+
   return (
-    <div className="m3-page">
+    <div className="min-h-screen bg-slate-950 px-4 py-6 text-slate-100 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-4xl space-y-6">
 
-      <div className="m3-page-heading">
-        <div>
-          <span className="m3-eyebrow">YOUR MENTAL WELLNESS</span>
-          <h1>Mood Journal</h1>
-          <p>Take a moment to check in with yourself.</p>
+        {/* PAGE HEADING */}
+        <div className="space-y-2">
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-400">
+            Mental wellness
+          </p>
+
+          <h1 className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+            Mood Journal
+          </h1>
+
+          <p className="text-sm text-slate-400">
+            Take a moment to check in with yourself.
+          </p>
         </div>
-      </div>
 
-      <form onSubmit={handleSubmit} className="m3-card mood-form">
+        {/* MOOD FORM */}
+        <form
+          onSubmit={handleSubmit}
+          className="rounded-2xl border border-slate-800 bg-slate-900 p-5 shadow-sm sm:p-6"
+        >
+          <div className="mb-6">
+            <p className="text-xs font-semibold uppercase tracking-wider text-blue-400">
+              Daily check-in
+            </p>
 
-        <div className="m3-card-heading">
-          <div>
-            <span className="m3-section-label">DAILY CHECK-IN</span>
-            <h2>{editingId ? "Edit your entry" : "How are you feeling?"}</h2>
+            <h2 className="mt-2 text-xl font-semibold text-white">
+              {editingId ? "Edit your entry" : "How are you feeling?"}
+            </h2>
+
+            <p className="mt-1 text-sm text-slate-400">
+              Choose the option that best describes your day.
+            </p>
           </div>
 
-          <span className="m3-icon mood-icon">💭</span>
-        </div>
+          {/* MOOD SELECTOR */}
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-5">
+            {moods.map(item => {
+              const selected = form.mood === item.name;
 
-        {/* MOOD SELECTOR */}
+              return (
+                <button
+                  type="button"
+                  key={item.name}
+                  onClick={() => updateForm("mood", item.name)}
+                  aria-pressed={selected}
+                  className={`rounded-xl border p-3 text-left transition ${
+                    selected
+                      ? "border-blue-500 bg-blue-500/10"
+                      : "border-slate-700 bg-slate-800 hover:border-slate-500"
+                  }`}
+                >
+                  <span
+                    className={`block text-sm font-semibold ${
+                      selected ? "text-blue-400" : "text-slate-200"
+                    }`}
+                  >
+                    {item.name}
+                  </span>
 
-        <div className="mood-selector">
+                  <span className="mt-1 block text-xs text-slate-500">
+                    {item.description}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
 
-          {moods.map(item => (
-            <button
-              type="button"
-              key={item.name}
-              className={`mood-option ${
-                form.mood === item.name ? "selected" : ""
-              }`}
-              onClick={() =>
-                setForm({ ...form, mood: item.name })
+          {/* ENERGY LEVEL */}
+          <div className="mt-8">
+            <div className="mb-3 flex items-center justify-between">
+              <label
+                htmlFor="energy"
+                className="text-sm font-medium text-slate-200"
+              >
+                Energy level
+              </label>
+
+              <span className="text-sm font-semibold text-blue-400">
+                {form.energy}/10
+              </span>
+            </div>
+
+            <input
+              id="energy"
+              type="range"
+              min="1"
+              max="10"
+              value={form.energy}
+              onChange={e =>
+                updateForm("energy", Number(e.target.value))
               }
+              className="h-2 w-full cursor-pointer accent-blue-500"
+            />
+
+            <div className="mt-2 flex justify-between text-xs text-slate-500">
+              <span>Exhausted</span>
+              <span>Energetic</span>
+            </div>
+          </div>
+
+          {/* STRESS LEVEL */}
+          <div className="mt-7">
+            <div className="mb-3 flex items-center justify-between">
+              <label
+                htmlFor="stress"
+                className="text-sm font-medium text-slate-200"
+              >
+                Stress level
+              </label>
+
+              <span className="text-sm font-semibold text-blue-400">
+                {form.stress}/10
+              </span>
+            </div>
+
+            <input
+              id="stress"
+              type="range"
+              min="1"
+              max="10"
+              value={form.stress}
+              onChange={e =>
+                updateForm("stress", Number(e.target.value))
+              }
+              className="h-2 w-full cursor-pointer accent-blue-500"
+            />
+
+            <div className="mt-2 flex justify-between text-xs text-slate-500">
+              <span>Relaxed</span>
+              <span>Very stressed</span>
+            </div>
+          </div>
+
+          {/* NOTES */}
+          <div className="mt-7">
+            <label
+              htmlFor="moodNotes"
+              className="mb-2 block text-sm font-medium text-slate-200"
             >
-              <span>{item.emoji}</span>
-              <small>{item.name}</small>
-            </button>
-          ))}
+              Your thoughts
+              <span className="ml-2 font-normal text-slate-500">
+                (optional)
+              </span>
+            </label>
 
-        </div>
-
-        {/* ENERGY */}
-
-        <div className="mood-rating">
-
-          <div className="mood-rating-heading">
-            <label htmlFor="energy">Energy level</label>
-            <strong>{form.energy}/10</strong>
+            <textarea
+              id="moodNotes"
+              rows="4"
+              placeholder="What happened today? How are you feeling?"
+              value={form.notes}
+              onChange={e => updateForm("notes", e.target.value)}
+              className="w-full resize-y rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-sm text-white outline-none placeholder:text-slate-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+            />
           </div>
 
-          <input
-            id="energy"
-            type="range"
-            min="1"
-            max="10"
-            value={form.energy}
-            onChange={e =>
-              setForm({
-                ...form,
-                energy: Number(e.target.value)
-              })
-            }
-          />
-
-          <div className="mood-range-labels">
-            <span>Exhausted</span>
-            <span>Energetic</span>
-          </div>
-
-        </div>
-
-        {/* STRESS */}
-
-        <div className="mood-rating">
-
-          <div className="mood-rating-heading">
-            <label htmlFor="stress">Stress level</label>
-            <strong>{form.stress}/10</strong>
-          </div>
-
-          <input
-            id="stress"
-            type="range"
-            min="1"
-            max="10"
-            value={form.stress}
-            onChange={e =>
-              setForm({
-                ...form,
-                stress: Number(e.target.value)
-              })
-            }
-          />
-
-          <div className="mood-range-labels">
-            <span>Relaxed</span>
-            <span>Very stressed</span>
-          </div>
-
-        </div>
-
-        {/* NOTES */}
-
-        <div className="m3-form-group">
-          <label htmlFor="moodNotes">Your thoughts (optional)</label>
-
-          <textarea
-            id="moodNotes"
-            rows="4"
-            placeholder="What happened today? How are you feeling?"
-            value={form.notes}
-            onChange={e =>
-              setForm({
-                ...form,
-                notes: e.target.value
-              })
-            }
-          />
-        </div>
-
-        <div className="m3-form-actions">
-
-          <button className="m3-button primary-button" type="submit">
-            {editingId ? "Update entry" : "Save mood entry"}
-          </button>
-
-          {editingId && (
+          {/* FORM ACTIONS */}
+          <div className="mt-6 flex flex-wrap gap-3">
             <button
-              type="button"
-              className="m3-button secondary-button"
-              onClick={cancelEdit}
+              type="submit"
+              className="rounded-xl bg-blue-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-blue-500"
             >
-              Cancel
+              {editingId ? "Update entry" : "Save mood entry"}
             </button>
-          )}
 
-        </div>
+            {editingId && (
+              <button
+                type="button"
+                onClick={cancelEdit}
+                className="rounded-xl border border-slate-700 px-5 py-3 text-sm font-medium text-slate-300 transition hover:bg-slate-800"
+              >
+                Cancel
+              </button>
+            )}
+          </div>
+        </form>
 
-      </form>
+        {/* TODAY'S HISTORY */}
+        <section className="rounded-2xl border border-slate-800 bg-slate-900 p-5 shadow-sm sm:p-6">
+          <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-wider text-blue-400">
+                Your records
+              </p>
 
-      {/* TODAY'S MOOD */}
+              <h2 className="mt-2 text-xl font-semibold text-white">
+                Today's mood history
+              </h2>
+            </div>
 
-      <section className="m3-card">
-
-        <div className="m3-card-heading">
-          <div>
-            <span className="m3-section-label">YOUR RECORDS</span>
-            <h2>Today's mood history</h2>
+            <span className="rounded-full border border-slate-700 bg-slate-800 px-3 py-1.5 text-xs font-medium text-slate-300">
+              {todayEntries.length} entries
+            </span>
           </div>
 
-          <span className="m3-count">
-            {todayEntries.length} entries
-          </span>
-        </div>
+          {todayEntries.length === 0 ? (
+            <div className="rounded-xl border border-dashed border-slate-700 px-4 py-10 text-center">
+              <h3 className="text-base font-medium text-slate-300">
+                No mood entries yet
+              </h3>
 
-        {todayEntries.length === 0 ? (
+              <p className="mt-2 text-sm text-slate-500">
+                Your daily check-ins will appear here.
+              </p>
+            </div>
+          ) : (
+            <div className="divide-y divide-slate-800">
+              {todayEntries.map(entry => (
+                <div
+                  key={entry.id}
+                  className="flex flex-col gap-4 py-5 first:pt-0 last:pb-0 sm:flex-row sm:items-start sm:justify-between"
+                >
+                  <div className="min-w-0 flex-1">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <h3 className="font-semibold text-white">
+                        {entry.mood}
+                      </h3>
 
-          <div className="m3-empty">
-            <span>🌱</span>
-            <h3>No mood entries yet</h3>
-            <p>Your daily check-ins will appear here.</p>
-          </div>
+                      <span className="rounded-md bg-slate-800 px-2 py-1 text-xs text-slate-400">
+                        {entry.energy}/10 energy
+                      </span>
 
-        ) : (
+                      <span className="rounded-md bg-slate-800 px-2 py-1 text-xs text-slate-400">
+                        {entry.stress}/10 stress
+                      </span>
+                    </div>
 
-          <div className="mood-history">
-
-            {todayEntries.map(entry => (
-
-              <div className="mood-history-item" key={entry.id}>
-
-                <div className="mood-history-emoji">
-                  {entry.emoji}
-                </div>
-
-                <div className="mood-history-info">
-                  <h3>{entry.mood}</h3>
-
-                  <p>
-                    Energy: {entry.energy}/10
-                    {" · "}
-                    Stress: {entry.stress}/10
-                  </p>
-
-                  {entry.notes && (
-                    <p className="mood-notes">
-                      {entry.notes}
-                    </p>
-                  )}
-
-                  <small>
-                    {new Date(entry.createdAt).toLocaleTimeString(
-                      [],
-                      { hour: "2-digit", minute: "2-digit" }
+                    {entry.notes && (
+                      <p className="mt-3 whitespace-pre-wrap break-words text-sm leading-relaxed text-slate-400">
+                        {entry.notes}
+                      </p>
                     )}
-                  </small>
+
+                    <p className="mt-3 text-xs text-slate-500">
+                      {entry.createdAt
+                        ? new Date(entry.createdAt).toLocaleTimeString(
+                            [],
+                            {
+                              hour: "2-digit",
+                              minute: "2-digit"
+                            }
+                          )
+                        : "Time unavailable"}
+                    </p>
+                  </div>
+
+                  <div className="flex shrink-0 items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => editEntry(entry)}
+                      className="rounded-lg border border-slate-700 px-3 py-2 text-xs font-medium text-slate-300 transition hover:border-blue-500 hover:text-blue-400"
+                    >
+                      Edit
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => deleteEntry(entry.id)}
+                      className="rounded-lg border border-slate-700 px-3 py-2 text-xs font-medium text-slate-300 transition hover:border-red-500 hover:text-red-400"
+                    >
+                      Delete
+                    </button>
+                  </div>
                 </div>
+              ))}
+            </div>
+          )}
+        </section>
 
-                <div className="meal-actions">
-                  <button
-                    aria-label="Edit mood"
-                    onClick={() => editEntry(entry)}
-                  >
-                    ✏️
-                  </button>
-
-                  <button
-                    aria-label="Delete mood"
-                    onClick={() => {
-                      dispatch(deleteMood(entry.id));
-                      if (editingId === entry.id) cancelEdit();
-                    }}
-                  >
-                    🗑️
-                  </button>
-                </div>
-
-              </div>
-
-            ))}
-
-          </div>
-
-        )}
-
-      </section>
-
+      </div>
     </div>
   );
 }

@@ -11,30 +11,31 @@ import {
   setWaterGoal
 } from "../features/meals/mealsSlice";
 
-import "../styles/Member3.css";
-
 const today = () => {
   const d = new Date();
   return new Date(d.getTime() - d.getTimezoneOffset() * 60000)
-    .toISOString().slice(0, 10);
+    .toISOString()
+    .slice(0, 10);
 };
 
 export default function MealsWater() {
   const dispatch = useDispatch();
 
-  const { entries = [], waterEntries = [], dailyGoal = 2500 } =
-    useSelector(state => state.meals);
+  const {
+    entries = [],
+    waterEntries = [],
+    dailyGoal = 2500
+  } = useSelector(state => state.meals);
 
   const todayMeals = entries.filter(m => m.date === today());
 
   const waterConsumed = waterEntries
     .filter(w => w.date === today())
-    .reduce((total, w) => total + w.amount, 0);
+    .reduce((total, w) => total + Number(w.amount || 0), 0);
 
-  const waterPercentage = Math.min(
-    100,
-    (waterConsumed / dailyGoal) * 100
-  );
+  const waterPercentage = dailyGoal > 0
+    ? Math.min(100, (waterConsumed / dailyGoal) * 100)
+    : 0;
 
   const [amount, setAmount] = useState(250);
   const [goalInput, setGoalInput] = useState(dailyGoal);
@@ -57,6 +58,7 @@ export default function MealsWater() {
         ...meal,
         calories: Number(meal.calories) || 0
       }));
+
       setEditingId(null);
     } else {
       dispatch(addMeal({
@@ -75,6 +77,7 @@ export default function MealsWater() {
 
   const editMeal = item => {
     setEditingId(item.id);
+
     setMeal({
       name: item.name,
       type: item.type,
@@ -84,6 +87,7 @@ export default function MealsWater() {
 
   const cancelEdit = () => {
     setEditingId(null);
+
     setMeal({
       name: "",
       type: "Breakfast",
@@ -91,135 +95,192 @@ export default function MealsWater() {
     });
   };
 
-  return (
-    <div className="m3-page">
+  const saveWaterGoal = () => {
+    const goal = Number(goalInput);
 
-      <div className="m3-page-heading">
-        <div>
-          <span className="m3-eyebrow">YOUR DAILY WELLNESS</span>
-          <h1>Meals & Water</h1>
-          <p>Fuel your body and stay hydrated.</p>
-        </div>
-      </div>
+    if (goal > 0) {
+      dispatch(setWaterGoal(goal));
+    }
+  };
+
+  const inputClass =
+    "w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-3 text-sm text-slate-100 outline-none transition placeholder:text-slate-600 focus:border-blue-500 focus:ring-1 focus:ring-blue-500";
+
+  const labelClass =
+    "mb-2 block text-sm font-medium text-slate-300";
+
+  const cardClass =
+    "rounded-xl border border-slate-800 bg-slate-900 p-5 sm:p-6";
+
+  const primaryButton =
+    "rounded-lg bg-blue-600 px-5 py-3 text-sm font-medium text-white transition hover:bg-blue-500 disabled:cursor-not-allowed disabled:opacity-50";
+
+  const secondaryButton =
+    "rounded-lg border border-slate-700 bg-slate-800 px-5 py-3 text-sm font-medium text-slate-300 transition hover:bg-slate-700 hover:text-white";
+
+  return (
+    <main className="min-h-screen space-y-6 bg-slate-950 p-4 text-slate-100 sm:p-6 lg:p-8">
+
+      {/* PAGE HEADER */}
+
+      <header>
+        <span className="text-xs font-semibold uppercase tracking-widest text-blue-400">
+          DAILY WELLNESS
+        </span>
+
+        <h1 className="mt-1 text-2xl font-bold tracking-tight sm:text-3xl">
+          Meals & Water
+        </h1>
+
+        <p className="mt-2 text-sm text-slate-400">
+          Keep track of what you eat and how much water you drink.
+        </p>
+      </header>
 
       {/* WATER TRACKER */}
 
-      <section className="m3-card water-card">
+      <section className={cardClass}>
 
-        <div className="m3-card-heading">
+        <div className="flex items-center justify-between gap-3">
           <div>
-            <span className="m3-section-label">HYDRATION</span>
-            <h2>Water intake</h2>
+            <span className="text-xs font-semibold uppercase tracking-wider text-blue-400">
+              HYDRATION
+            </span>
+
+            <h2 className="mt-1 text-lg font-semibold">
+              Water intake
+            </h2>
           </div>
-          <span className="m3-icon water-icon">💧</span>
+
+          <span className="text-sm font-medium text-slate-400">
+            {Math.round(waterPercentage)}% completed
+          </span>
         </div>
 
-        <div className="water-content">
+        <div className="mt-6 grid grid-cols-1 items-center gap-6 sm:grid-cols-2">
 
-          <div
-            className="water-circle"
-            style={{
-              "--water-progress": `${waterPercentage}%`
-            }}
-          >
-            <div className="water-circle-inner">
-              <strong>{(waterConsumed / 1000).toFixed(2)}</strong>
-              <span>Litres</span>
+          <div>
+            <div className="flex items-baseline gap-2">
+              <strong className="text-4xl font-bold tracking-tight">
+                {(waterConsumed / 1000).toFixed(2)}
+              </strong>
+
+              <span className="text-sm text-slate-400">
+                litres
+              </span>
             </div>
-          </div>
 
-          <div className="water-details">
-            <h3>{Math.round(waterPercentage)}%</h3>
-            <p>Daily target completed</p>
+            <p className="mt-2 text-sm text-slate-400">
+              of {(dailyGoal / 1000).toFixed(2)} litres daily target
+            </p>
 
-            <div className="m3-progress-track">
+            <div className="mt-5 h-2.5 overflow-hidden rounded-full bg-slate-800">
               <div
-                className="m3-progress-fill water-fill"
+                className="h-full rounded-full bg-blue-500 transition-all duration-500"
                 style={{ width: `${waterPercentage}%` }}
               />
             </div>
 
-            <small>
-              {Math.max(0, dailyGoal - waterConsumed)} ml remaining
-            </small>
+            <p className="mt-2 text-xs text-slate-500">
+              {Math.max(0, dailyGoal - waterConsumed)} ml remaining today
+            </p>
           </div>
 
-        </div>
+          <div className="rounded-xl bg-slate-950 p-5">
+            <label htmlFor="waterAmount" className={labelClass}>
+              Serving size
+            </label>
 
-        <div className="water-controls">
-
-          <label htmlFor="waterAmount">Amount per serving</label>
-
-          <select
-            id="waterAmount"
-            value={amount}
-            onChange={e => setAmount(Number(e.target.value))}
-          >
-            <option value={150}>150 ml</option>
-            <option value={250}>250 ml</option>
-            <option value={350}>350 ml</option>
-            <option value={500}>500 ml</option>
-            <option value={750}>750 ml</option>
-            <option value={1000}>1 litre</option>
-          </select>
-
-          <div className="water-buttons">
-            <button
-              className="m3-button secondary-button"
-              onClick={() => dispatch(removeWater(amount))}
-              disabled={waterConsumed <= 0}
+            <select
+              id="waterAmount"
+              value={amount}
+              onChange={e => setAmount(Number(e.target.value))}
+              className={inputClass}
             >
-              − Remove
-            </button>
+              <option value={150}>150 ml</option>
+              <option value={250}>250 ml</option>
+              <option value={350}>350 ml</option>
+              <option value={500}>500 ml</option>
+              <option value={750}>750 ml</option>
+              <option value={1000}>1 litre</option>
+            </select>
 
-            <button
-              className="m3-button primary-button"
-              onClick={() => dispatch(addWater(amount))}
-            >
-              + Add water
-            </button>
-          </div>
-
-          <div className="water-goal-editor">
-            <label htmlFor="waterGoal">Daily water goal (ml)</label>
-
-            <div className="goal-input-row">
-              <input
-                id="waterGoal"
-                type="number"
-                min="1"
-                value={goalInput}
-                onChange={e => setGoalInput(e.target.value)}
-              />
+            <div className="mt-4 grid grid-cols-2 gap-2">
+              <button
+                type="button"
+                className={secondaryButton}
+                onClick={() => dispatch(removeWater(amount))}
+                disabled={waterConsumed <= 0}
+              >
+                Remove
+              </button>
 
               <button
-                className="m3-button secondary-button"
-                onClick={() => dispatch(setWaterGoal(goalInput))}
+                type="button"
+                className={primaryButton}
+                onClick={() => dispatch(addWater(amount))}
               >
-                Save goal
+                + Add water
               </button>
             </div>
           </div>
 
         </div>
+
+        {/* WATER GOAL */}
+
+        <div className="mt-6 border-t border-slate-800 pt-5">
+          <label htmlFor="waterGoal" className={labelClass}>
+            Daily water target
+          </label>
+
+          <div className="flex max-w-md gap-2">
+            <input
+              id="waterGoal"
+              type="number"
+              min="1"
+              value={goalInput}
+              onChange={e => setGoalInput(e.target.value)}
+              className={inputClass}
+            />
+
+            <button
+              type="button"
+              className={secondaryButton}
+              onClick={saveWaterGoal}
+            >
+              Save
+            </button>
+          </div>
+        </div>
+
       </section>
 
       {/* MEAL FORM */}
 
-      <section className="m3-card">
+      <section className={cardClass}>
 
-        <div className="m3-card-heading">
-          <div>
-            <span className="m3-section-label">NUTRITION</span>
-            <h2>{editingId ? "Edit meal" : "Add a meal"}</h2>
-          </div>
-          <span className="m3-icon meal-icon">🍽️</span>
+        <div className="mb-6">
+          <span className="text-xs font-semibold uppercase tracking-wider text-blue-400">
+            NUTRITION
+          </span>
+
+          <h2 className="mt-1 text-lg font-semibold">
+            {editingId ? "Update meal" : "Record a meal"}
+          </h2>
+
+          <p className="mt-1 text-sm text-slate-400">
+            Add details of something you've eaten.
+          </p>
         </div>
 
-        <form onSubmit={handleMealSubmit} className="m3-form">
+        <form onSubmit={handleMealSubmit} className="space-y-5">
 
-          <div className="m3-form-group">
-            <label htmlFor="mealName">Meal name</label>
+          <div>
+            <label htmlFor="mealName" className={labelClass}>
+              Meal name
+            </label>
+
             <input
               id="mealName"
               type="text"
@@ -228,20 +289,25 @@ export default function MealsWater() {
               onChange={e =>
                 setMeal({ ...meal, name: e.target.value })
               }
+              className={inputClass}
               required
             />
           </div>
 
-          <div className="m3-form-grid">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
 
-            <div className="m3-form-group">
-              <label htmlFor="mealType">Meal type</label>
+            <div>
+              <label htmlFor="mealType" className={labelClass}>
+                Meal type
+              </label>
+
               <select
                 id="mealType"
                 value={meal.type}
                 onChange={e =>
                   setMeal({ ...meal, type: e.target.value })
                 }
+                className={inputClass}
               >
                 <option>Breakfast</option>
                 <option>Lunch</option>
@@ -250,8 +316,11 @@ export default function MealsWater() {
               </select>
             </div>
 
-            <div className="m3-form-group">
-              <label htmlFor="mealCalories">Calories (optional)</label>
+            <div>
+              <label htmlFor="mealCalories" className={labelClass}>
+                Calories (optional)
+              </label>
+
               <input
                 id="mealCalories"
                 type="number"
@@ -261,20 +330,24 @@ export default function MealsWater() {
                 onChange={e =>
                   setMeal({ ...meal, calories: e.target.value })
                 }
+                className={inputClass}
               />
             </div>
 
           </div>
 
-          <div className="m3-form-actions">
-            <button className="m3-button primary-button" type="submit">
+          <div className="flex flex-wrap gap-3">
+            <button
+              type="submit"
+              className={primaryButton}
+            >
               {editingId ? "Update meal" : "+ Add meal"}
             </button>
 
             {editingId && (
               <button
                 type="button"
-                className="m3-button secondary-button"
+                className={secondaryButton}
                 onClick={cancelEdit}
               >
                 Cancel
@@ -287,56 +360,80 @@ export default function MealsWater() {
 
       {/* TODAY'S MEALS */}
 
-      <section className="m3-card">
+      <section className={cardClass}>
 
-        <div className="m3-card-heading">
+        <div className="mb-5 flex items-center justify-between gap-3">
           <div>
-            <span className="m3-section-label">TODAY'S RECORD</span>
-            <h2>Today's meals</h2>
+            <span className="text-xs font-semibold uppercase tracking-wider text-blue-400">
+              TODAY'S RECORD
+            </span>
+
+            <h2 className="mt-1 text-lg font-semibold">
+              Meals recorded
+            </h2>
           </div>
 
-          <span className="m3-count">{todayMeals.length} meals</span>
+          <span className="rounded-full bg-slate-800 px-3 py-1.5 text-xs font-medium text-slate-300">
+            {todayMeals.length} {todayMeals.length === 1 ? "meal" : "meals"}
+          </span>
         </div>
 
         {todayMeals.length === 0 ? (
-          <div className="m3-empty">
-            <span>🥗</span>
-            <h3>No meals recorded yet</h3>
-            <p>Add your first meal to start tracking your nutrition.</p>
+          <div className="rounded-xl border border-dashed border-slate-700 px-4 py-10 text-center">
+            <h3 className="font-medium text-slate-300">
+              Nothing recorded yet
+            </h3>
+
+            <p className="mt-2 text-sm text-slate-500">
+              Your meals will appear here once you add them.
+            </p>
           </div>
         ) : (
-          <div className="meal-list">
+          <div className="divide-y divide-slate-800">
 
             {todayMeals.map(item => (
-              <div className="meal-item" key={item.id}>
+              <div
+                className="flex flex-wrap items-center justify-between gap-4 py-4 first:pt-0 last:pb-0"
+                key={item.id}
+              >
 
-                <div className="meal-item-icon">
-                  {item.type === "Breakfast" ? "🌅" :
-                   item.type === "Lunch" ? "🍛" :
-                   item.type === "Dinner" ? "🍽️" : "🍎"}
+                <div className="min-w-0 flex-1">
+                  <h3 className="font-medium text-slate-100">
+                    {item.name}
+                  </h3>
+
+                  <p className="mt-1 text-sm text-slate-400">
+                    {item.type}
+                    <span className="mx-2 text-slate-600">·</span>
+                    {item.calories || 0} kcal
+                  </p>
                 </div>
 
-                <div className="meal-item-info">
-                  <h3>{item.name}</h3>
-                  <p>{item.type} · {item.calories || 0} kcal</p>
-                </div>
-
-                <div className="meal-actions">
+                <div className="flex items-center gap-2">
                   <button
+                    type="button"
                     aria-label="Edit meal"
+                    title="Edit meal"
                     onClick={() => editMeal(item)}
+                    className="rounded-lg border border-slate-700 px-3 py-2 text-xs font-medium text-slate-300 transition hover:bg-slate-800 hover:text-white"
                   >
-                    ✏️
+                    Edit
                   </button>
 
                   <button
+                    type="button"
                     aria-label="Delete meal"
+                    title="Delete meal"
                     onClick={() => {
                       dispatch(deleteMeal(item.id));
-                      if (editingId === item.id) cancelEdit();
+
+                      if (editingId === item.id) {
+                        cancelEdit();
+                      }
                     }}
+                    className="rounded-lg border border-slate-700 px-3 py-2 text-xs font-medium text-red-400 transition hover:border-red-500/40 hover:bg-red-500/10"
                   >
-                    🗑️
+                    Delete
                   </button>
                 </div>
 
@@ -348,6 +445,6 @@ export default function MealsWater() {
 
       </section>
 
-    </div>
+    </main>
   );
 }
