@@ -11,7 +11,6 @@ import {
   setWaterGoal
 } from "../features/meals/mealsSlice";
 
-import "../styles/Member3.css";
 
 const today = () => {
   const d = new Date();

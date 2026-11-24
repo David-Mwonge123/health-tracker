@@ -8,7 +8,6 @@ import {
   deleteMood
 } from "../features/mood/moodSlice";
 
-import "../styles/Member3.css";
 
 const today = () => {
   const d = new Date();
