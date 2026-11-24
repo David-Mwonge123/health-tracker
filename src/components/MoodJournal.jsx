@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -8,10 +7,7 @@ import {
   deleteMood
 } from "../features/mood/moodSlice";
 
-<<<<<<< HEAD
-=======
 
->>>>>>> a6e9a89622d3de1c0b053dae1257950cbdb467f5
 const today = () => {
   const d = new Date();
   return new Date(d.getTime() - d.getTimezoneOffset() * 60000)
