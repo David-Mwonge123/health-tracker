@@ -9,6 +9,7 @@ import Goals from './pages/Goals.jsx';
 import Profile from './components/Profile.jsx';
 
 
+
 function App() {
   const theme = useSelector((state) => state.settings.theme);
 
