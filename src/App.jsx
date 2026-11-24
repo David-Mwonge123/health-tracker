@@ -7,7 +7,7 @@ import Habits from './pages/Habits.jsx';
 import Reminders from './pages/Reminder.jsx';
 import Goals from './pages/Goals.jsx';
 import Profile from './components/Profile.jsx';
-import Settings from './components/Settings.jsx';
+
 
 function App() {
   const theme = useSelector((state) => state.settings.theme);
@@ -37,11 +37,7 @@ function App() {
       <div id="profile">
         <Profile />
       </div>
-      <hr />
-
-      <div id="settings">
-        <Settings />
-      </div>
+     
     </div>
   );
 }
