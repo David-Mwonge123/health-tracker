@@ -3,6 +3,11 @@ import { useSelector } from "react-redux";
 import Profile from "./components/Profile";
 import Settings from "./pages/Settings";
 import Dashboard from "./pages/Dashboard";
+import Habits from "./pages/Habits";
+import Goals from "./pages/Goals";
+import Reminders from './pages/Reminder';
+
+
 
 function App() {
   const theme = useSelector((state) => state.settings.theme);
