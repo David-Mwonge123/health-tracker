@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = { habits: [] };
+
 const habitSlice = createSlice({
   name: "habits",
   initialState,
@@ -16,7 +17,7 @@ const habitSlice = createSlice({
       }
     },
     deleteHabit: (state, action) => {
-      state.habits = state.habits.filter((x) => x.id !== action.paylod);
+      state.habits = state.habits.filter((x) => x.id !== action.payload);
     },
   },
 });
