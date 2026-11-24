@@ -6,26 +6,13 @@ import "../../styles/Member3.css";
 
 const getDateKey = date => {
   const d = new Date(date);
+
   return new Date(
     d.getTime() - d.getTimezoneOffset() * 60000
   ).toISOString().slice(0, 10);
 };
 
-const getLastSevenDays = () => {
-  return Array.from({ length: 7 }, (_, i) => {
-    const date = new Date();
-    date.setDate(date.getDate() - (6 - i));
-
-    return {
-      date: getDateKey(date),
-      label: date.toLocaleDateString("en", {
-        weekday: "short"
-      })
-    };
-  });
-};
-
-function WeeklyChart({ title, unit, data, color }) {
+function WeeklyChart({ title, unit, data, color, periodLabel }) {
   const max = Math.max(
     ...data.map(item => item.value),
     1
@@ -36,7 +23,9 @@ function WeeklyChart({ title, unit, data, color }) {
 
       <div className="m3-card-heading">
         <div>
-          <span className="m3-section-label">LAST 7 DAYS</span>
+          <span className="m3-section-label">
+            {periodLabel.toUpperCase()}
+          </span>
           <h2>{title}</h2>
         </div>
       </div>
@@ -91,15 +80,15 @@ export default function Progress({
 }) {
 
   const meals = useSelector(
-    state => state.meals.entries || []
+    state => state.meals?.entries || []
   );
 
   const waterEntries = useSelector(
-    state => state.meals.waterEntries || []
+    state => state.meals?.waterEntries || []
   );
 
   const moodEntries = useSelector(
-    state => state.mood.entries || []
+    state => state.mood?.entries || []
   );
 
   const [period, setPeriod] = useState("week");
@@ -124,16 +113,28 @@ export default function Progress({
     return days.map(day => ({
       ...day,
       value: valueFn(
-        records.filter(record => record.date === day.date)
+        records.filter(record => {
+          const recordDate = record.date || record.createdAt;
+
+          return recordDate &&
+            getDateKey(recordDate) === day.date;
+        })
       )
     }));
   };
 
+  // WATER INTAKE
+
   const waterData = aggregate(
     waterEntries,
     records =>
-      records.reduce((sum, item) => sum + item.amount, 0) / 1000
+      records.reduce(
+        (sum, item) => sum + Number(item.amount || 0),
+        0
+      ) / 1000
   );
+
+  // WORKOUT ACTIVITY
 
   const workoutData = aggregate(
     workouts,
@@ -143,6 +144,8 @@ export default function Progress({
         0
       )
   );
+
+  // SLEEP DURATION
 
   const sleepData = aggregate(
     sleepEntries,
@@ -155,6 +158,8 @@ export default function Progress({
       ) / records.length;
     }
   );
+
+  // MOOD TREND
 
   const moodData = aggregate(
     moodEntries,
@@ -176,31 +181,46 @@ export default function Progress({
     }
   );
 
+  // SUMMARY CALCULATIONS
+
   const totalWater = waterData.reduce(
-    (sum, item) => sum + item.value, 0
+    (sum, item) => sum + item.value,
+    0
   );
 
   const totalWorkout = workoutData.reduce(
-    (sum, item) => sum + item.value, 0
+    (sum, item) => sum + item.value,
+    0
   );
 
-  const averageSleep = sleepData.length
-    ? sleepData.reduce((sum, item) => sum + item.value, 0) /
-      sleepData.filter(item => item.value > 0).length || 0
-    : 0;
-
-  const averageMood = moodData.filter(
+  const recordedSleepDays = sleepData.filter(
     item => item.value > 0
   );
 
-  const moodAverage = averageMood.length
-    ? averageMood.reduce((sum, item) => sum + item.value, 0) /
-      averageMood.length
+  const averageSleep = recordedSleepDays.length
+    ? recordedSleepDays.reduce(
+        (sum, item) => sum + item.value,
+        0
+      ) / recordedSleepDays.length
     : 0;
 
-  const totalMeals = meals.filter(
-    item => days.some(day => day.date === item.date)
-  ).length;
+  const recordedMoodDays = moodData.filter(
+    item => item.value > 0
+  );
+
+  const moodAverage = recordedMoodDays.length
+    ? recordedMoodDays.reduce(
+        (sum, item) => sum + item.value,
+        0
+      ) / recordedMoodDays.length
+    : 0;
+
+  const totalMeals = meals.filter(item => {
+    const mealDate = item.date || item.createdAt;
+
+    return mealDate &&
+      days.some(day => getDateKey(mealDate) === day.date);
+  }).length;
 
   const periodLabel = period === "week"
     ? "Last 7 days"
@@ -267,14 +287,18 @@ export default function Progress({
 
       </div>
 
+      {/* MOOD SUMMARY */}
+
       <div className="m3-card mood-summary-card">
         <div>
           <span className="m3-section-label">MOOD TREND</span>
+
           <h2>
-            {moodAverage.length
+            {moodAverage > 0
               ? `${moodAverage.toFixed(1)} / 5`
               : "No mood data"}
           </h2>
+
           <p>Average recorded mood · {periodLabel}</p>
         </div>
 
@@ -292,6 +316,7 @@ export default function Progress({
         unit="minutes"
         data={workoutData}
         color="#8b5cf6"
+        periodLabel={periodLabel}
       />
 
       <WeeklyChart
@@ -299,6 +324,7 @@ export default function Progress({
         unit="litres"
         data={waterData}
         color="#38bdf8"
+        periodLabel={periodLabel}
       />
 
       <WeeklyChart
@@ -306,6 +332,7 @@ export default function Progress({
         unit="hours"
         data={sleepData}
         color="#a78bfa"
+        periodLabel={periodLabel}
       />
 
       <WeeklyChart
@@ -313,6 +340,7 @@ export default function Progress({
         unit="mood score (1–5)"
         data={moodData}
         color="#34d399"
+        periodLabel={periodLabel}
       />
 
     </div>
