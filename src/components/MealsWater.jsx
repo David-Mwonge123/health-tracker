@@ -11,6 +11,10 @@ import {
   setWaterGoal
 } from "../features/meals/mealsSlice";
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> a6e9a89622d3de1c0b053dae1257950cbdb467f5
 const today = () => {
   const d = new Date();
   return new Date(d.getTime() - d.getTimezoneOffset() * 60000)
