@@ -1,79 +1,94 @@
-
+import "../App.css";
 function Dashboard() {
   return (
-    <div>
-      <h1>Health Dashboard</h1>
+    <main className="dashboard">
+      <header className="dashboard-header">
+        <div>
+          <h1>Health Dashboard</h1>
+          <p>Track your daily health and wellness progress.</p>
+        </div>
+      </header>
 
       {/* Today's Summary */}
-      <section>
+      <section className="dashboard-section">
         <h2>Today's Summary</h2>
 
-        <div>
-          <h3>Workout</h3>
-          <p>Today's workout progress</p>
-        </div>
+        <div className="summary-grid">
+          <article className="summary-card">
+            <span>🏋️</span>
+            <h3>Workout</h3>
+            <p>30 minutes</p>
+          </article>
 
-        <div>
-          <h3>Water</h3>
-          <p>Water intake today</p>
-        </div>
+          <article className="summary-card">
+            <span>💧</span>
+            <h3>Water</h3>
+            <p>1,200 ml</p>
+          </article>
 
-        <div>
-          <h3>Sleep</h3>
-          <p>Sleep duration</p>
-        </div>
+          <article className="summary-card">
+            <span>😴</span>
+            <h3>Sleep</h3>
+            <p>6 hours</p>
+          </article>
 
-        <div>
-          <h3>Meals</h3>
-          <p>Meals logged today</p>
+          <article className="summary-card">
+            <span>🥗</span>
+            <h3>Meals</h3>
+            <p>3 meals</p>
+          </article>
         </div>
       </section>
 
       {/* Today's Progress */}
-      <section>
+      <section className="dashboard-section">
         <h2>Today's Progress</h2>
 
-        <div>
-          <label>Water Intake: 1200 / 2000 ml</label>
-          <progress value="1200" max="2000"></progress>
-        </div>
+        <div className="progress-grid">
+          <article className="progress-card">
+            <h3>Water Intake</h3>
+            <p>1,200 / 2,000 ml</p>
+            <progress value="1200" max="2000" />
+          </article>
 
-        <div>
-          <label>Sleep: 6 / 8 hours</label>
-          <progress value="6" max="8"></progress>
-        </div>
+          <article className="progress-card">
+            <h3>Sleep</h3>
+            <p>6 / 8 hours</p>
+            <progress value="6" max="8" />
+          </article>
 
-        <div>
-          <label>Workout: 30 / 60 minutes</label>
-          <progress value="30" max="60"></progress>
+          <article className="progress-card">
+            <h3>Workout</h3>
+            <p>30 / 60 minutes</p>
+            <progress value="30" max="60" />
+          </article>
         </div>
       </section>
 
       {/* Quick Actions */}
-      <section>
+      <section className="dashboard-section">
         <h2>Quick Actions</h2>
 
-        <div>
-          <a href="#profile">View Profile</a>
-        </div>
-
-        <div>
-          <a href="#settings">Open Settings</a>
+        <div className="quick-actions">
+          <a href="#profile">👤 View Profile</a>
+          <a href="#settings">⚙️ Open Settings</a>
         </div>
       </section>
 
       {/* Recent Activity */}
-      <section>
+      <section className="dashboard-section">
         <h2>Recent Activity</h2>
 
-        <ul>
-          <li>Water intake recorded</li>
-          <li>Workout completed</li>
-          <li>Sleep duration recorded</li>
-          <li>Meal logged</li>
-        </ul>
+        <div className="activity-card">
+          <ul>
+            <li>💧 Water intake recorded</li>
+            <li>🏋️ Workout completed</li>
+            <li>😴 Sleep duration recorded</li>
+            <li>🥗 Meal logged</li>
+          </ul>
+        </div>
       </section>
-    </div>
+    </main>
   );
 }
 
