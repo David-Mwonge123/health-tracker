@@ -9,6 +9,7 @@ import Reminders from './pages/Reminder';
 
 
 
+
 function App() {
   const theme = useSelector((state) => state.settings.theme);
 
