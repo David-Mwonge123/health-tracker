@@ -4,6 +4,7 @@ import Profile from "./components/Profile";
 import Settings from "./pages/Settings";
 import Dashboard from "./pages/Dashboard";
 
+
 function App() {
   const theme = useSelector((state) => state.settings.theme);
 
