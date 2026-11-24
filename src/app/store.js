@@ -7,6 +7,8 @@ import moodReducer from "../features/mood/moodSlice";
 import workoutReducer from "../features/workouts/workoutsSlice";
 import habitReducer from "../features/habits/habitSlice";
 import reminderReducer from "../features/reminders/reminderSlice";
+import mealsReducer from '../features/meals/mealSlice';
+import moodReducer from '../features/mood/moodSlice';
 
 export const store = configureStore({
   reducer: {
