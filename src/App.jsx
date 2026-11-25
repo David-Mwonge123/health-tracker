@@ -6,6 +6,10 @@ import Dashboard from "./pages/Dashboard";
 import Habits from "./pages/Habits";
 import Goals from "./pages/Goals";
 import Reminders from './pages/Reminder';
+import Sidebar from "./components/Sidebar";
+import Workouts from "./pages/Workouts";
+
+
 
 
 
@@ -15,6 +19,7 @@ function App() {
 
   return (
     <div className={`app ${theme}`}>
+         <Sidebar/>
       <h1>Health Tracker</h1>
 
       <Dashboard />
@@ -30,6 +35,7 @@ function App() {
       <div id="settings">
         <Settings />
       </div>
+    <Workouts/>
     </div>
   );
 }
