@@ -35,17 +35,15 @@ export default function Habits() {
       {habits.length === 0 && <p className="bg-white text-gray-500 text-center p-8 rounded-xl border border-gray-200">No habits yet. Add one above.</p>}
 
       {habits.map((h) => (
-        <div key={h.id} className="bg-white border border-gray-200 rounded-xl p-5 shadow-sm mb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:border-green-300 transition duration-200"
->
+        <div key={h.id}>
           <input
             type="checkbox"
             checked={h.done}
             onChange={() => dispatch(toggleHabit(h.id))}
-             className="w-5 h-5 accent-green-600 cursor-pointer"
           />
           <span>{h.name}</span>
-          <span className="flex items-center gap-2 bg-green-50 text-green-700 px-3 py-2 rounded-lg text-sm font-medium">{h.streak} day streak</span>
-          <button onClick={() => dispatch(deleteHabit(h.id))} className="flex items-center gap-2 text-red-500 hover:bg-red-50 px-3 py-2 rounded-lg transition duration-200">Delete</button>
+          <span>{h.streak} day streak</span>
+          <button onClick={() => dispatch(deleteHabit(h.id))}>Delete</button>
         </div>
       ))}
     </div>
