@@ -1,6 +1,11 @@
 import { NavLink } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { logout } from "../features/auth/authSlice";
 
 function Sidebar() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const linkClass = ({ isActive }) =>
     `flex items-center gap-3 px-4 py-3 rounded-lg transition duration-200 ${
       isActive
@@ -64,6 +69,15 @@ function Sidebar() {
           Settings
         </NavLink>
       </div>
+      <button
+        onClick={() => {
+          dispatch(logout());
+          navigate("/login");
+        }}
+        className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-red-500 hover:bg-red-50 font-bold transition duration-200 mt-2"
+      >
+        Logout
+      </button>
     </div>
   );
 }
