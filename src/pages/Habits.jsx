@@ -5,7 +5,6 @@ import {
   toggleHabit,
   deleteHabit,
 } from "../features/habits/habitSlice";
-import { Trash2, Flame, CheckCircle2, Plus } from "lucide-react";
 
 export default function Habits() {
   const habits = useSelector((state) => state.habits.habits);

@@ -144,16 +144,8 @@ function Workouts() {
     [dispatch]
   );
 
-  // Workout icons
-  const workoutIcons = {
-    Running: Footprints,
-    Walking: Footprints,
-    Cycling: Bike,
-    Gym: Dumbbell,
-    Swimming: Waves,
-    Yoga: Activity,
-    Other: Activity,
-  };
+
+ 
 
   // Intensity colors
   const intensityStyles = {
