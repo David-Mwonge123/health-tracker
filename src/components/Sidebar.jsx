@@ -40,7 +40,7 @@ function Sidebar() {
         <NavLink to="/sleep" className={linkClass}>
           Sleep Schedule
         </NavLink>
-        <NavLink to="/mood" className={linkClass}>
+        <NavLink to="/mood-journal" className={linkClass}>
           Journal / Diary
         </NavLink>
         <NavLink to="/habits" className={linkClass}>
