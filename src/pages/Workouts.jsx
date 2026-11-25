@@ -83,12 +83,14 @@ function Workouts() {
       0
     );
 
-    const activeDays = weeklyWorkouts.length
-      ? new Set(weeklyWorkouts.map((workout) => workout.date)).size
-      : 0;
+    const totalWorkouts = weeklyWorkouts.length;
 
-    return {
-      count: weeklyWorkouts.length,
+    const activeDays = new Set(
+      weeklyWorkouts.map((workout) => workout.date)
+    ).size;
+
+     return {
+      count: totalWorkouts,
       minutes: totalMinutes,
       activeDays,
       weekDays,
@@ -115,7 +117,7 @@ function Workouts() {
   }, []);
 
   // Save new or edited workout
-  const handleSave = useCallback(
+ const handleSave = useCallback(
     (workout) => {
       if (editingWorkout) {
         dispatch(updateWorkout(workout));
@@ -143,21 +145,15 @@ function Workouts() {
     [dispatch]
   );
 
-
- 
-
   return (
     <div className="space-y-7">
 
       {/* Page Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-gray-800">
+          <h1 className="text-3xl font-bold text-green-800">
             My Workouts
           </h1>
-          <p className="text-gray-500 mt-2">
-            Stay active and build healthy habits every day.
-          </p>
         </div>
 
         <button
@@ -285,9 +281,7 @@ function Workouts() {
           <h2 className="text-xl font-semibold text-gray-800">
             Recent Workouts
           </h2>
-          <p className="text-sm text-gray-500 mt-1">
-            Keep track of your fitness activities.
-          </p>
+        
         </div>
 
         {recentWorkouts.length === 0 ? (
