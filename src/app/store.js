@@ -1,4 +1,3 @@
-
 import { configureStore } from "@reduxjs/toolkit";
 
 import settingsReducer from "../features/settings/settingsSlice";
@@ -8,13 +7,16 @@ import workoutReducer from "../features/workouts/workoutsSlice";
 import habitReducer from "../features/habits/habitSlice";
 import reminderReducer from "../features/reminders/reminderSlice";
 
-
-
-const saved = localStorage.getItem('health-tracker-state')
-const preloadedState = saved ? JSON.parse(saved) : undefined
+let preloadedState;
+try{const saved = localStorage.getItem("health-tracker-state");
+ preloadedState = saved ? JSON.parse(saved) : undefined;
+}
+ catch{
+  preloadedState = undefined;
+ }
 
 export const store = configureStore({
-  reducer:{
+  reducer: {
     settings: settingsReducer,
     meals: mealsReducer,
     mood: moodReducer,
@@ -23,9 +25,10 @@ export const store = configureStore({
     reminders: reminderReducer,
   },
   preloadedState,
-})
-store.subscribe(() =>{
-  localStorage.setItem('health-tracker-state',
-    JSON.stringify(store.getState())
-  )
-})
+});
+store.subscribe(() => {
+  localStorage.setItem(
+    "health-tracker-state",
+    JSON.stringify(store.getState()),
+  );
+});
