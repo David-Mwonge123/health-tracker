@@ -38,8 +38,8 @@ export default function Goals() {
 
   return (
     <div>
-      <h1>Goals</h1>
-      <p>Goals come from Settings. Edit them in Settings page.</p>
+      <h1 className="text-3xl font-bold text-green-700 mb-8">Goals</h1>
+      <p className="bg-white text-gray-500 text-center p-8 rounded-xl border border-gray-200">Goals come from Settings. Edit them in Settings page.</p>
       {cards.map((c) => (
         <div key={c.label}>
           <div>
