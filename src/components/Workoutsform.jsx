@@ -1,6 +1,5 @@
 
 import React, { useState } from "react";
-import { X } from "lucide-react";
 
 function WorkoutForm({ initialWorkout, onSave, onCancel }) {
 
@@ -45,7 +44,7 @@ function WorkoutForm({ initialWorkout, onSave, onCancel }) {
           </h2>
 
           <button onClick={onCancel} type="button">
-            <X className="text-gray-500 hover:text-red-500" />
+           Done
           </button>
         </div>
 

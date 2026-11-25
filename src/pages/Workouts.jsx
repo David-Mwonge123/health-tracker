@@ -4,8 +4,6 @@ import { useSelector, useDispatch } from "react-redux";
 
 import {addWorkout, updateWorkout, deleteWorkout, } from "../features/workouts/workoutsSlice";
 
-import {Dumbbell,
-  Clock, CalendarCheck, Plus, Pencil,Trash2, Footprints, Bike, Waves, Activity, } from "lucide-react";
 
 // Get local date
 function getDateKey(date) {
@@ -185,7 +183,7 @@ function Workouts() {
           onClick={handleAdd}
           className="flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white px-5 py-3 rounded-lg font-medium transition"
         >
-          <Plus size={20} />
+  
           Add Workout
         </button>
       </div>
@@ -206,9 +204,6 @@ function Workouts() {
               </h2>
             </div>
 
-            <div className="bg-green-100 p-3 rounded-xl">
-              <Dumbbell className="text-green-600" size={25} />
-            </div>
           </div>
 
           <p className="text-sm text-gray-400 mt-4">
@@ -232,9 +227,6 @@ function Workouts() {
               </h2>
             </div>
 
-            <div className="bg-blue-100 p-3 rounded-xl">
-              <Clock className="text-blue-600" size={25} />
-            </div>
           </div>
 
           <p className="text-sm text-gray-400 mt-4">
@@ -255,9 +247,6 @@ function Workouts() {
               </h2>
             </div>
 
-            <div className="bg-orange-100 p-3 rounded-xl">
-              <CalendarCheck className="text-orange-500" size={25} />
-            </div>
           </div>
 
           <p className="text-sm text-gray-400 mt-4">
@@ -334,10 +323,6 @@ function Workouts() {
           // Empty State
           <div className="text-center py-14 px-4">
 
-            <div className="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Dumbbell className="text-green-600" size={30} />
-            </div>
-
             <h3 className="text-lg font-semibold text-gray-800">
               No workouts yet
             </h3>
@@ -350,8 +335,7 @@ function Workouts() {
               onClick={handleAdd}
               className="mt-5 inline-flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-5 py-2.5 rounded-lg transition"
             >
-              <Plus size={18} />
-              Add Your First Workout
+              Add First Workout
             </button>
 
           </div>
@@ -371,12 +355,7 @@ function Workouts() {
                   className="flex flex-col sm:flex-row sm:items-center gap-4 p-4 border border-gray-100 rounded-xl hover:bg-gray-50 transition"
                 >
 
-                  <div className="bg-green-100 p-3 rounded-xl w-fit">
-                    <WorkoutIcon
-                      size={25}
-                      className="text-green-600"
-                    />
-                  </div>
+      
 
                   <div className="flex-1">
                     <h3 className="font-semibold text-gray-800">
@@ -409,7 +388,6 @@ function Workouts() {
                       className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg"
                       title="Edit workout"
                     >
-                      <Pencil size={18} />
                     </button>
 
                     {/* Delete */}
@@ -418,7 +396,6 @@ function Workouts() {
                       className="p-2 text-red-500 hover:bg-red-50 rounded-lg"
                       title="Delete workout"
                     >
-                      <Trash2 size={18} />
                     </button>
 
                   </div>
