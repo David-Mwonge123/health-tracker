@@ -9,19 +9,19 @@ function Sidebar() {
      {/* Logo */}
       <div className="flex items-center gap-3 mb-10">
         
-        <h1 className="text-2xl font-bold text-green-700"> HealthTrack</h1>
+        <h1 className="text-2xl font-bold text-green-700"> HEALTHTRACK</h1>
       </div>
 
       {/* Navigation Links */}
       <nav className="flex-1">
 
         {/* Overview */}
-        <p className="text-xs font-semibold text-gray-400 mb-3">OVERVIEW </p>
+        <p className="text-xs font-semibold text-gray-400 mb-3">OVERVIEW! </p>
 
         <Link to="/" className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-600 hover:bg-green-50 hover:text-green-600 transition duration-200">  Dashboard</Link>
 
         {/* Daily Wellness */}
-        <p className="text-xs font-semibold text-gray-400 mt-6 mb-3">DAILY WELLNESS</p>
+        <p className="text-xs font-semibold text-gray-400 mt-6 mb-3">DAILY WELLNESS!</p>
 
         <Link to="/Workouts"  className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-600 hover:bg-green-50 hover:text-green-600 transition duration-200"> Workouts</Link>
 
@@ -34,7 +34,7 @@ function Sidebar() {
         <Link to="/Habits"  className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-600 hover:bg-green-50 hover:text-green-600 transition duration-200" >Habits</Link>
 
         {/* Tracking */}
-        <p className="text-xs font-semibold text-gray-400 mt-6 mb-3">TRACKING </p>
+        <p className="text-xs font-semibold text-gray-400 mt-6 mb-3">TRACKING! </p>
 
     
         <Link to="/Progress"  className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-600 hover:bg-green-50 hover:text-green-600 transition duration-200">Progress Chart</Link>
