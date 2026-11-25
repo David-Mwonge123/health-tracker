@@ -1,11 +1,11 @@
 
 import React, { useState, useMemo, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import {addWorkout,updateWorkout,deleteWorkout,} from "../features/workouts/workoutsSlice";
+import WorkoutForm from "../components/Workoutsform";
 
-import {addWorkout, updateWorkout, deleteWorkout, } from "../features/workouts/workoutsSlice";
 
-
-// Get local date
+// Get date in local YYYY-MM-DD format
 function getDateKey(date) {
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, "0");
@@ -14,7 +14,7 @@ function getDateKey(date) {
   return `${year}-${month}-${day}`;
 }
 
-// Format date
+// Format workout date for display
 function formatDate(date) {
   return new Date(`${date}T00:00:00`).toLocaleDateString(
     "en-US",
@@ -34,23 +34,21 @@ function Workouts() {
     (state) => state.workouts.workouts
   );
 
-  // Control workout form
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingWorkout, setEditingWorkout] = useState(null);
 
-  // Calculate weekly statistics
+  // Calculate weekly workout information
   const weeklyData = useMemo(() => {
     const today = new Date();
     const startOfWeek = new Date(today);
 
-    // Start week on Monday
+    // Make Monday the first day of the week
     const day = today.getDay();
     const difference = day === 0 ? 6 : day - 1;
 
     startOfWeek.setDate(today.getDate() - difference);
     startOfWeek.setHours(0, 0, 0, 0);
 
-    // Get all seven days
     const weekDays = Array.from({ length: 7 }, (_, index) => {
       const date = new Date(startOfWeek);
       date.setDate(startOfWeek.getDate() + index);
@@ -64,12 +62,13 @@ function Workouts() {
       };
     });
 
-    // Get workouts for this week
-    const weeklyWorkouts = workouts.filter((workout) =>
-      weekDays.some((day) => day.date === workout.date)
-    );
+    const weeklyWorkouts = workouts.filter((workout) => {
+      return weekDays.some(
+        (day) => day.date === workout.date
+      );
+    });
 
-    // Calculate minutes for each day
+    // Add workout minutes to the correct day
     weekDays.forEach((day) => {
       day.minutes = weeklyWorkouts
         .filter((workout) => workout.date === day.date)
@@ -84,9 +83,9 @@ function Workouts() {
       0
     );
 
-    const activeDays = new Set(
-      weeklyWorkouts.map((workout) => workout.date)
-    ).size;
+    const activeDays = weeklyWorkouts.length
+      ? new Set(weeklyWorkouts.map((workout) => workout.date)).size
+      : 0;
 
     return {
       count: weeklyWorkouts.length,
@@ -96,26 +95,26 @@ function Workouts() {
     };
   }, [workouts]);
 
-  // Sort workouts by date
+  // Sort workouts from newest to oldest
   const recentWorkouts = useMemo(() => {
-    return [...workouts].sort((a, b) =>
-      b.date.localeCompare(a.date)
-    );
+    return [...workouts].sort((a, b) => {
+      return b.date.localeCompare(a.date);
+    });
   }, [workouts]);
 
-  // Open form to add workout
+  // Open form for a new workout
   const handleAdd = useCallback(() => {
     setEditingWorkout(null);
     setIsFormOpen(true);
   }, []);
 
-  // Open form to edit workout
+  // Open form for editing
   const handleEdit = useCallback((workout) => {
     setEditingWorkout(workout);
     setIsFormOpen(true);
   }, []);
 
-  // Save workout
+  // Save new or edited workout
   const handleSave = useCallback(
     (workout) => {
       if (editingWorkout) {
@@ -147,35 +146,24 @@ function Workouts() {
 
  
 
-  // Intensity colors
-  const intensityStyles = {
-    Low: "bg-green-100 text-green-700",
-    Medium: "bg-orange-100 text-orange-700",
-    High: "bg-red-100 text-red-700",
-  };
-
-  // Get highest workout duration for chart
-  const maxMinutes = Math.max(
-    ...weeklyData.weekDays.map((day) => day.minutes),
-    1
-  );
-
   return (
     <div className="space-y-7">
 
       {/* Page Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-green-700">
+          <h1 className="text-3xl font-bold text-gray-800">
             My Workouts
           </h1>
+          <p className="text-gray-500 mt-2">
+            Stay active and build healthy habits every day.
+          </p>
         </div>
 
         <button
           onClick={handleAdd}
           className="flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white px-5 py-3 rounded-lg font-medium transition"
         >
-  
           Add Workout
         </button>
       </div>
@@ -183,19 +171,14 @@ function Workouts() {
       {/* Summary Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
 
-        {/* Workouts */}
+        {/* Workouts This Week */}
         <div className="bg-white border border-gray-200 rounded-xl p-5 shadow-sm">
           <div className="flex justify-between items-center">
             <div>
-              <p className="text-sm text-gray-500">
-                Workouts This Week
-              </p>
-
-              <h2 className="text-3xl font-bold text-gray-800 mt-2">
-                {weeklyData.count}
+              <p className="text-sm text-gray-500"> Workouts This Week </p>
+              <h2 className="text-3xl font-bold text-gray-800 mt-2">{weeklyData.count}
               </h2>
             </div>
-
           </div>
 
           <p className="text-sm text-gray-400 mt-4">
@@ -203,22 +186,20 @@ function Workouts() {
           </p>
         </div>
 
-        {/* Duration */}
+        {/* Total Minutes */}
         <div className="bg-white border border-gray-200 rounded-xl p-5 shadow-sm">
           <div className="flex justify-between items-center">
             <div>
               <p className="text-sm text-gray-500">
                 Total Duration
               </p>
-
               <h2 className="text-3xl font-bold text-gray-800 mt-2">
                 {weeklyData.minutes}
-                <span className="text-sm text-gray-500 ml-1">
+                <span className="text-sm font-medium text-gray-500 ml-1">
                   min
                 </span>
               </h2>
             </div>
-
           </div>
 
           <p className="text-sm text-gray-400 mt-4">
@@ -233,37 +214,36 @@ function Workouts() {
               <p className="text-sm text-gray-500">
                 Active Days
               </p>
-
               <h2 className="text-3xl font-bold text-gray-800 mt-2">
                 {weeklyData.activeDays}
               </h2>
             </div>
-
           </div>
 
           <p className="text-sm text-gray-400 mt-4">
             Days you exercised this week
           </p>
         </div>
-
       </div>
 
-      {/* Weekly Activity */}
+      {/* Weekly Activity Chart */}
       <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
-
         <div className="mb-6">
           <h2 className="text-xl font-semibold text-gray-800">
             Weekly Activity
           </h2>
-
           <p className="text-sm text-gray-500 mt-1">
             Your workout duration throughout the week.
           </p>
         </div>
 
         <div className="flex items-end justify-between gap-3 h-40">
-
           {weeklyData.weekDays.map((day) => {
+            const maxMinutes = Math.max(
+              ...weeklyData.weekDays.map((item) => item.minutes),
+              1
+            );
+
             const barHeight =
               day.minutes > 0
                 ? Math.max((day.minutes / maxMinutes) * 100, 8)
@@ -282,7 +262,9 @@ function Workouts() {
                   <div
                     className="w-full bg-green-500 rounded-t-lg transition-all duration-300"
                     style={{
-                      height: `${barHeight}%`,
+                      height: day.minutes > 0
+                        ? `${barHeight}%`
+                        : "0%",
                     }}
                   ></div>
                 </div>
@@ -293,7 +275,6 @@ function Workouts() {
               </div>
             );
           })}
-
         </div>
       </div>
 
@@ -304,7 +285,6 @@ function Workouts() {
           <h2 className="text-xl font-semibold text-gray-800">
             Recent Workouts
           </h2>
-
           <p className="text-sm text-gray-500 mt-1">
             Keep track of your fitness activities.
           </p>
@@ -314,6 +294,8 @@ function Workouts() {
 
           // Empty State
           <div className="text-center py-14 px-4">
+            <div className="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+            </div>
 
             <h3 className="text-lg font-semibold text-gray-800">
               No workouts yet
@@ -327,28 +309,28 @@ function Workouts() {
               onClick={handleAdd}
               className="mt-5 inline-flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-5 py-2.5 rounded-lg transition"
             >
+              
               Add First Workout
             </button>
-
           </div>
 
         ) : (
 
-          // Display Workout Cards
+          // Workout Cards
           <div className="p-5 space-y-4">
-
             {recentWorkouts.map((workout) => {
-              const WorkoutIcon =
-                workoutIcons[workout.type] || Activity;
+              
+              const intensityStyles = {
+                Low: "bg-green-100 text-green-700",
+                Medium: "bg-orange-100 text-orange-700",
+                High: "bg-red-100 text-red-700",
+              };
 
               return (
                 <div
                   key={workout.id}
                   className="flex flex-col sm:flex-row sm:items-center gap-4 p-4 border border-gray-100 rounded-xl hover:bg-gray-50 transition"
                 >
-
-      
-
                   <div className="flex-1">
                     <h3 className="font-semibold text-gray-800">
                       {workout.name}
@@ -363,44 +345,39 @@ function Workouts() {
                     </p>
                   </div>
 
-                  <div className="flex items-center justify-between sm:justify-end gap-3">
-
+                  <div className="flex items-center justify-between sm:justify-end gap-4">
                     <span
                       className={`px-3 py-1 rounded-full text-xs font-medium ${
-                        intensityStyles[workout.intensity] ||
-                        "bg-gray-100 text-gray-700"
+                        intensityStyles[workout.intensity]
                       }`}
                     >
                       {workout.intensity}
                     </span>
 
-                    {/* Edit */}
                     <button
                       onClick={() => handleEdit(workout)}
                       className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg"
                       title="Edit workout"
                     >
+            
                     </button>
 
-                    {/* Delete */}
                     <button
                       onClick={() => handleDelete(workout.id)}
                       className="p-2 text-red-500 hover:bg-red-50 rounded-lg"
                       title="Delete workout"
                     >
+              
                     </button>
-
                   </div>
                 </div>
               );
             })}
-
           </div>
         )}
-
       </div>
 
-      {/* Workout Form */}
+      {/* Add/Edit Workout Form */}
       {isFormOpen && (
         <WorkoutForm
           key={editingWorkout?.id ?? "new-workout"}
