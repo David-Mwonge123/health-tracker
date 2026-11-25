@@ -7,7 +7,7 @@ import {
 } from "../features/reminders/reminderSlice";
 
 export default function Reminders() {
-  const reminders = useSelector((state) => state.reminders.reminders);
+  const reminders = useSelector((state) => state.reminders?.reminders || []);
   const dispatch = useDispatch();
   const [title, setTitle] = useState("");
   const [time, setTime] = useState("");
@@ -51,7 +51,7 @@ export default function Reminders() {
           <option>Weekly</option>
           <option>Once</option>
         </select>
-        <button className="bg-green-700 hover:bg-green-800 text-white font-semibold px-6 py-3 rounded-lg transition duration-200">
+        <button className="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-3 rounded-lg transition duration-200">
           Add
         </button>
       </form>
@@ -62,20 +62,33 @@ export default function Reminders() {
         </p>
       )}
 
-      {reminders.map((r) => (
-        <div
-          key={r.id}
-          className="bg-white border border-gray-200 rounded-xl shadow-sm p-5 mb-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
-        >
-          <span className="text-gray-800 font-medium">
-            {r.title} - {r.time} ({r.repeat})
-          </span>
-          <button onClick={() => dispatch(toggleReminder(r.id))}>
-            {r.enabled ? "ON" : "OFF"}
-          </button>
-          <button onClick={() => dispatch(deleteReminder(r.id))}>Delete</button>
-        </div>
-      ))}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {reminders.map((r) => (
+          <div
+            key={r.id}
+            className={`bg-white p-6 rounded-xl border border-gray-200 flex items-center gap-3 ${!r.enabled ? "opacity-50" : ""}`}
+          >
+            <div className="flex-1">
+              <p className="font-medium text-gray-800">{r.title}</p>
+              <p className="text-sm text-gray-500">
+                {r.time} • {r.repeat}
+              </p>
+            </div>
+            <button
+              onClick={() => dispatch(toggleReminder(r.id))}
+              className={`px-3 py-1 rounded-full text-sm font-bold ${r.enabled ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-500"}`}
+            >
+              {r.enabled ? "ON" : "OFF"}
+            </button>
+            <button
+              onClick={() => dispatch(deleteReminder(r.id))}
+              className="text-red-500 text-sm font-bold"
+            >
+              Delete
+            </button>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
