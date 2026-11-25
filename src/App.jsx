@@ -66,14 +66,7 @@ function App() {
                 </Protected>
               }
             />
-            <Route
-              path="/sleep"
-              element={
-                <Protected>
-                  <Sleep />
-                </Protected>
-              }
-            />
+
             <Route
               path="/mood-journal"
               element={
