@@ -1,3 +1,6 @@
+import React from "react";
+import "./index.css";
+import "./App.css";
 import { useSelector } from "react-redux";
 
 import Profile from "./components/Profile";
@@ -19,13 +22,36 @@ function App() {
       <h1>Health Tracker</h1>
 
       <Dashboard />
-      <Workouts/>
-        <Profile />
-        <Settings />
-        <Habits/>
-        <Reminders/>
+      <hr />
 
-    
+      <div id="habits">
+        <Habits />
+      </div>
+      <hr />
+
+      <div id="goals">
+        <Goals />
+      </div>
+      <hr />
+
+      <div id="reminders">
+        <Reminders />
+      </div>
+      <hr />
+
+      <div id="profile">
+        <Profile />
+      </div>
+      <hr />
+      <div id="meals">
+        <MealsWater />
+      </div>
+      <hr />
+
+      <div id="mood">
+        <MoodJournal />
+      </div>
+      <hr />
     </div>
     </>
     
