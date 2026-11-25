@@ -11,6 +11,8 @@ import Goals from "./pages/Goals";
 import Reminders from './pages/Reminder';
 import Sidebar from "./components/Sidebar";
 import Workouts from "./pages/Workouts";
+import MealsWater from "./components/MealsWater";
+import MoodJournal from "./components/MoodJournal";
 
 function App() {
   const theme = useSelector((state) => state.settings.theme);
@@ -50,6 +52,11 @@ function App() {
 
       <div id="mood">
         <MoodJournal />
+      </div>
+      <hr />
+
+      <div id="">
+        <Workouts />
       </div>
       <hr />
     </div>
