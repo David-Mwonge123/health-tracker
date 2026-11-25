@@ -9,8 +9,12 @@ import habitReducer from "../features/habits/habitSlice";
 import reminderReducer from "../features/reminders/reminderSlice";
 
 
+
+const saved = localStorage.getItem('health-tracker-state')
+const preloadedState = saved ? JSON.parse(saved) : undefined
+
 export const store = configureStore({
-  reducer: {
+  reducer:{
     settings: settingsReducer,
     meals: mealsReducer,
     mood: moodReducer,
@@ -18,4 +22,10 @@ export const store = configureStore({
     habits: habitReducer,
     reminders: reminderReducer,
   },
-});
+  preloadedState,
+})
+store.subscribe(() =>{
+  localStorage.setItem('health-tracker-state',
+    JSON.stringify(store.getState())
+  )
+})
