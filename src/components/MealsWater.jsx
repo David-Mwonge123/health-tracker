@@ -10,7 +10,6 @@ import {
   setWaterGoal
 } from "../features/meals/mealsSlice";
 
-
 const today = () => {
   const d = new Date();
   return new Date(d.getTime() - d.getTimezoneOffset() * 60000)
@@ -104,35 +103,35 @@ export default function MealsWater() {
   };
 
   const inputClass =
-    "w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-3 text-sm text-slate-100 outline-none transition placeholder:text-slate-600 focus:border-blue-500 focus:ring-1 focus:ring-blue-500";
+    "w-full rounded-lg border border-gray-200 bg-white px-3 py-3 text-sm text-gray-800 outline-none transition placeholder:text-gray-400 focus:border-green-600 focus:ring-1 focus:ring-green-600";
 
   const labelClass =
-    "mb-2 block text-sm font-medium text-slate-300";
+    "mb-2 block text-sm font-medium text-gray-600";
 
   const cardClass =
-    "rounded-xl border border-slate-800 bg-slate-900 p-5 sm:p-6";
+    "rounded-xl border border-gray-200 bg-white p-5 sm:p-6";
 
   const primaryButton =
-    "rounded-lg bg-blue-600 px-5 py-3 text-sm font-medium text-white transition hover:bg-blue-500 disabled:cursor-not-allowed disabled:opacity-50";
+    "rounded-lg bg-green-600 px-5 py-3 text-sm font-medium text-white transition hover:bg-green-700 disabled:cursor-not-allowed disabled:opacity-50";
 
   const secondaryButton =
-    "rounded-lg border border-slate-700 bg-slate-800 px-5 py-3 text-sm font-medium text-slate-300 transition hover:bg-slate-700 hover:text-white";
+    "rounded-lg border border-gray-200 bg-white px-5 py-3 text-sm font-medium text-gray-600 transition hover:bg-gray-50 hover:text-gray-800";
 
   return (
-    <main className="min-h-screen space-y-6 bg-slate-950 p-4 text-slate-100 sm:p-6 lg:p-8">
+    <main className="space-y-6 p-4 text-gray-800 sm:p-6 lg:p-8">
 
       {/* PAGE HEADER */}
 
       <header>
-        <span className="text-xs font-semibold uppercase tracking-widest text-blue-400">
+        <span className="text-xs font-semibold uppercase tracking-widest text-green-600">
           DAILY WELLNESS
         </span>
 
-        <h1 className="mt-1 text-2xl font-bold tracking-tight sm:text-3xl">
+        <h1 className="mt-1 text-2xl font-bold tracking-tight text-green-700 sm:text-3xl">
           Meals & Water
         </h1>
 
-        <p className="mt-2 text-sm text-slate-400">
+        <p className="mt-2 text-sm text-gray-500">
           Keep track of what you eat and how much water you drink.
         </p>
       </header>
@@ -143,16 +142,16 @@ export default function MealsWater() {
 
         <div className="flex items-center justify-between gap-3">
           <div>
-            <span className="text-xs font-semibold uppercase tracking-wider text-blue-400">
+            <span className="text-xs font-semibold uppercase tracking-wider text-green-600">
               HYDRATION
             </span>
 
-            <h2 className="mt-1 text-lg font-semibold">
+            <h2 className="mt-1 text-lg font-semibold text-gray-800">
               Water intake
             </h2>
           </div>
 
-          <span className="text-sm font-medium text-slate-400">
+          <span className="text-sm font-medium text-gray-500">
             {Math.round(waterPercentage)}% completed
           </span>
         </div>
@@ -161,32 +160,32 @@ export default function MealsWater() {
 
           <div>
             <div className="flex items-baseline gap-2">
-              <strong className="text-4xl font-bold tracking-tight">
+              <strong className="text-4xl font-bold tracking-tight text-gray-800">
                 {(waterConsumed / 1000).toFixed(2)}
               </strong>
 
-              <span className="text-sm text-slate-400">
+              <span className="text-sm text-gray-500">
                 litres
               </span>
             </div>
 
-            <p className="mt-2 text-sm text-slate-400">
+            <p className="mt-2 text-sm text-gray-500">
               of {(dailyGoal / 1000).toFixed(2)} litres daily target
             </p>
 
-            <div className="mt-5 h-2.5 overflow-hidden rounded-full bg-slate-800">
+            <div className="mt-5 h-2.5 overflow-hidden rounded-full bg-gray-100">
               <div
-                className="h-full rounded-full bg-blue-500 transition-all duration-500"
+                className="h-full rounded-full bg-green-600 transition-all duration-500"
                 style={{ width: `${waterPercentage}%` }}
               />
             </div>
 
-            <p className="mt-2 text-xs text-slate-500">
+            <p className="mt-2 text-xs text-gray-500">
               {Math.max(0, dailyGoal - waterConsumed)} ml remaining today
             </p>
           </div>
 
-          <div className="rounded-xl bg-slate-950 p-5">
+          <div className="rounded-xl bg-gray-50 p-5">
             <label htmlFor="waterAmount" className={labelClass}>
               Serving size
             </label>
@@ -229,7 +228,7 @@ export default function MealsWater() {
 
         {/* WATER GOAL */}
 
-        <div className="mt-6 border-t border-slate-800 pt-5">
+        <div className="mt-6 border-t border-gray-200 pt-5">
           <label htmlFor="waterGoal" className={labelClass}>
             Daily water target
           </label>
@@ -261,15 +260,15 @@ export default function MealsWater() {
       <section className={cardClass}>
 
         <div className="mb-6">
-          <span className="text-xs font-semibold uppercase tracking-wider text-blue-400">
+          <span className="text-xs font-semibold uppercase tracking-wider text-green-600">
             NUTRITION
           </span>
 
-          <h2 className="mt-1 text-lg font-semibold">
+          <h2 className="mt-1 text-lg font-semibold text-gray-800">
             {editingId ? "Update meal" : "Record a meal"}
           </h2>
 
-          <p className="mt-1 text-sm text-slate-400">
+          <p className="mt-1 text-sm text-gray-500">
             Add details of something you've eaten.
           </p>
         </div>
@@ -364,32 +363,32 @@ export default function MealsWater() {
 
         <div className="mb-5 flex items-center justify-between gap-3">
           <div>
-            <span className="text-xs font-semibold uppercase tracking-wider text-blue-400">
+            <span className="text-xs font-semibold uppercase tracking-wider text-green-600">
               TODAY'S RECORD
             </span>
 
-            <h2 className="mt-1 text-lg font-semibold">
+            <h2 className="mt-1 text-lg font-semibold text-gray-800">
               Meals recorded
             </h2>
           </div>
 
-          <span className="rounded-full bg-slate-800 px-3 py-1.5 text-xs font-medium text-slate-300">
+          <span className="rounded-full bg-gray-100 px-3 py-1.5 text-xs font-medium text-gray-600">
             {todayMeals.length} {todayMeals.length === 1 ? "meal" : "meals"}
           </span>
         </div>
 
         {todayMeals.length === 0 ? (
-          <div className="rounded-xl border border-dashed border-slate-700 px-4 py-10 text-center">
-            <h3 className="font-medium text-slate-300">
+          <div className="rounded-xl border border-dashed border-gray-200 px-4 py-10 text-center">
+            <h3 className="font-medium text-gray-700">
               Nothing recorded yet
             </h3>
 
-            <p className="mt-2 text-sm text-slate-500">
+            <p className="mt-2 text-sm text-gray-500">
               Your meals will appear here once you add them.
             </p>
           </div>
         ) : (
-          <div className="divide-y divide-slate-800">
+          <div className="divide-y divide-gray-200">
 
             {todayMeals.map(item => (
               <div
@@ -398,13 +397,13 @@ export default function MealsWater() {
               >
 
                 <div className="min-w-0 flex-1">
-                  <h3 className="font-medium text-slate-100">
+                  <h3 className="font-medium text-gray-800">
                     {item.name}
                   </h3>
 
-                  <p className="mt-1 text-sm text-slate-400">
+                  <p className="mt-1 text-sm text-gray-500">
                     {item.type}
-                    <span className="mx-2 text-slate-600">·</span>
+                    <span className="mx-2 text-gray-300">·</span>
                     {item.calories || 0} kcal
                   </p>
                 </div>
@@ -415,7 +414,7 @@ export default function MealsWater() {
                     aria-label="Edit meal"
                     title="Edit meal"
                     onClick={() => editMeal(item)}
-                    className="rounded-lg border border-slate-700 px-3 py-2 text-xs font-medium text-slate-300 transition hover:bg-slate-800 hover:text-white"
+                    className="rounded-lg border border-gray-200 px-3 py-2 text-xs font-medium text-gray-600 transition hover:bg-gray-50 hover:text-gray-800"
                   >
                     Edit
                   </button>
@@ -431,7 +430,7 @@ export default function MealsWater() {
                         cancelEdit();
                       }
                     }}
-                    className="rounded-lg border border-slate-700 px-3 py-2 text-xs font-medium text-red-400 transition hover:border-red-500/40 hover:bg-red-500/10"
+                    className="rounded-lg border border-gray-200 px-3 py-2 text-xs font-medium text-red-500 transition hover:border-red-200 hover:bg-red-50"
                   >
                     Delete
                   </button>
