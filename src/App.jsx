@@ -11,10 +11,10 @@ import Goals from "./pages/Goals";
 import Reminders from "./pages/Reminders";
 import Settings from "./pages/Settings";
 import Workouts from "./pages/Workouts";
-import MealsWater from "./pages/MealsWater";
-import Mood from "./pages/Mood";
-import Sleep from "./pages/Sleep";
-import Progress from "./pages/Progress";
+import MealsWater from "./components/MealsWater";
+import MoodJournal from "./components/MoodJournal";
+
+import Progress from "./components/progress/Progress";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 
@@ -75,10 +75,10 @@ function App() {
               }
             />
             <Route
-              path="/mood"
+              path="/mood-journal"
               element={
                 <Protected>
-                  <Mood />
+                  <MoodJournal />
                 </Protected>
               }
             />
