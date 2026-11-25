@@ -8,7 +8,7 @@ import Sidebar from "./components/Sidebar";
 import Dashboard from "./pages/Dashboard";
 import Habits from "./pages/Habits";
 import Goals from "./pages/Goals";
-import Reminders from "./pages/Reminders";
+import Reminders from "./pages/Reminder";
 import Settings from "./pages/Settings";
 import Workouts from "./pages/Workouts";
 import MealsWater from "./components/MealsWater";
