@@ -1,40 +1,47 @@
 import React from "react";
 import "./index.css";
 import "./App.css";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import Sidebar from "./components/Sidebar";
 import Dashboard from "./pages/Dashboard";
 import Habits from "./pages/Habits";
 import Goals from "./pages/Goals";
-import Reminders from "./pages/Reminder";
+import Reminders from "./pages/Reminders";
 import Settings from "./pages/Settings";
 import Workouts from "./pages/Workouts";
-import MealsWater from "./components/MealsWater";
-import MoodJournal from "./components/MoodJournal";
-import Progress from "./components/progress/Progress";
-import { Navigate } from "react-router-dom";
+import MealsWater from "./pages/MealsWater";
+import Mood from "./pages/Mood";
+import Sleep from "./pages/Sleep";
+import Progress from "./pages/Progress";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 
+function Protected({ children }) {
+  const user = useSelector((state) => state.auth.user);
+  if (!user) return <Navigate to="/login" replace />;
+  return children;
+}
+
 function App() {
   const theme = useSelector((state) => state.settings.theme);
-  function Protected({ children }) {
-    const user = useSelector((state) => state.auth.user);
-    if (!user) return <Navigate to="/login" replace />;
-    return children;
-  }
+  const location = useLocation();
+  const hideSidebar =
+    location.pathname === "/login" || location.pathname === "/signup";
 
   return (
     <div className={theme === "dark" ? "bg-gray-900 text-white" : "bg-gray-50"}>
       <div className="flex min-h-screen">
-        <Sidebar />
+        {!hideSidebar && <Sidebar />}
 
         <main className="flex-1 p-6 md:p-8 max-w-5xl mx-auto w-full">
           <Routes>
+            {/* Public - no login needed */}
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
+
+            {/* Protected - must be logged in */}
             <Route
               path="/"
               element={
@@ -59,12 +66,19 @@ function App() {
                 </Protected>
               }
             />
-
             <Route
-              path="/mood-journal"
+              path="/sleep"
               element={
                 <Protected>
-                  <MoodJournal />
+                  <Sleep />
+                </Protected>
+              }
+            />
+            <Route
+              path="/mood"
+              element={
+                <Protected>
+                  <Mood />
                 </Protected>
               }
             />
@@ -109,7 +123,7 @@ function App() {
               }
             />
 
-            <Route path="*" element={<Dashboard />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </main>
       </div>
