@@ -176,13 +176,9 @@ function Workouts() {
       {/* Page Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-gray-800">
+          <h1 className="text-3xl font-bold text-green-700">
             My Workouts
           </h1>
-
-          <p className="text-gray-500 mt-2">
-            Stay active and build healthy habits every day.
-          </p>
         </div>
 
         <button

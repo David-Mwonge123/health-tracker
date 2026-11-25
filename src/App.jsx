@@ -9,34 +9,26 @@ import Reminders from './pages/Reminder';
 import Sidebar from "./components/Sidebar";
 import Workouts from "./pages/Workouts";
 
-
-
-
-
-
 function App() {
   const theme = useSelector((state) => state.settings.theme);
 
   return (
-    <div className={`app ${theme}`}>
+    <>
+    <div >
          <Sidebar/>
       <h1>Health Tracker</h1>
 
       <Dashboard />
-
-      <hr />
-
-      <div id="profile">
+      <Workouts/>
         <Profile />
-      </div>
-
-      <hr />
-
-      <div id="settings">
         <Settings />
-      </div>
-    <Workouts/>
+        <Habits/>
+        <Reminders/>
+
+    
     </div>
+    </>
+    
   );
 }
 
