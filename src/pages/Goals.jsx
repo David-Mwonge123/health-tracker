@@ -38,20 +38,32 @@ export default function Goals() {
 
   return (
     <div>
-      <h1>Goals</h1>
-      <p>Goals come from Settings. Edit them in Settings page.</p>
-      {cards.map((c) => (
-        <div key={c.label}>
-          <div>
-            <strong>{c.label}</strong>
-            <span>{c.value}</span>
+      <h1 className="text-3xl font-bold text-green-700 mb-8">Goals</h1>
+      
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
+        {cards.map((c) => (
+          <div
+            key={c.label}
+            className="bg-white p-6 rounded-xl border border-gray-200"
+          >
+            <div className="flex justify-between items-center mb-3">
+              <strong className="text-gray-800">{c.label}</strong>
+              <span className="text-gray-500 text-sm">{c.value}</span>
+            </div>
+
+            <div className="w-full bg-gray-100 rounded-full h-3 overflow-hidden">
+              <div
+                className="bg-green-600 h-3 rounded-full transition-all"
+                style={{ width: `${c.pct}%` }}
+              />
+            </div>
+
+            <small className="text-green-700 font-bold mt-2 block">
+              {c.pct}%
+            </small>
           </div>
-          <div>
-            <div />
-          </div>
-          <small>{c.pct}%</small>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   );
 }
