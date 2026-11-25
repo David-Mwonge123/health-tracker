@@ -65,7 +65,7 @@ function Sidebar() {
         {user ? (
           <>
             <p className="px-4 text-sm text-gray-500 mb-2">Hi, {user.name}</p>
-            <NavLink to="/settings" className={linkClass}>
+            <NavLink to="/profile" className={linkClass}>
               My Profile
             </NavLink>
             <NavLink to="/settings" className={linkClass}>

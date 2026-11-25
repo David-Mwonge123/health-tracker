@@ -13,7 +13,7 @@ import Settings from "./pages/Settings";
 import Workouts from "./pages/Workouts";
 import MealsWater from "./components/MealsWater";
 import MoodJournal from "./components/MoodJournal";
-
+import Profile from "./components/Profile";
 import Progress from "./components/progress/Progress";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
@@ -104,6 +104,14 @@ function App() {
               element={
                 <Protected>
                   <Reminders />
+                </Protected>
+              }
+            />
+            <Route
+              path="/profile"
+              element={
+                <Protected>
+                  <Profile />
                 </Protected>
               }
             />
