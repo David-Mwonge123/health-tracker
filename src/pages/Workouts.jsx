@@ -151,14 +151,14 @@ function Workouts() {
       {/* Page Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-green-800">
+          <h1 className="text-3xl font-bold text-green-700">
             My Workouts
           </h1>
         </div>
 
         <button
           onClick={handleAdd}
-          className="flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white px-5 py-3 rounded-lg font-medium transition"
+          className="flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white px-5 py-3 mt-4 rounded-lg font-medium transition"
         >
           Add Workout
         </button>
@@ -288,8 +288,6 @@ function Workouts() {
 
           // Empty State
           <div className="text-center py-14 px-4">
-            <div className="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-            </div>
 
             <h3 className="text-lg font-semibold text-gray-800">
               No workouts yet
@@ -353,7 +351,7 @@ function Workouts() {
                       className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg"
                       title="Edit workout"
                     >
-            
+                    Edit
                     </button>
 
                     <button
@@ -361,7 +359,7 @@ function Workouts() {
                       className="p-2 text-red-500 hover:bg-red-50 rounded-lg"
                       title="Delete workout"
                     >
-              
+                     Delete
                     </button>
                   </div>
                 </div>
