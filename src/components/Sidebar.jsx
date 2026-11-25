@@ -1,11 +1,12 @@
-import { NavLink } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../features/auth/authSlice";
 
 function Sidebar() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const user = useSelector((state) => state.auth.user);
+
   const linkClass = ({ isActive }) =>
     `flex items-center gap-3 px-4 py-3 rounded-lg transition duration-200 ${
       isActive
@@ -60,24 +61,37 @@ function Sidebar() {
         </NavLink>
       </nav>
 
-      {/* Profile */}
       <div className="border-t border-gray-200 pt-5 mt-5">
-        <NavLink to="/settings" className={linkClass}>
-          <span>My Profile</span>
-        </NavLink>
-        <NavLink to="/settings" className={linkClass}>
-          Settings
-        </NavLink>
+        {user ? (
+          <>
+            <p className="px-4 text-sm text-gray-500 mb-2">Hi, {user.name}</p>
+            <NavLink to="/settings" className={linkClass}>
+              My Profile
+            </NavLink>
+            <NavLink to="/settings" className={linkClass}>
+              Settings
+            </NavLink>
+            <button
+              onClick={() => {
+                dispatch(logout());
+                navigate("/login");
+              }}
+              className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-red-500 hover:bg-red-50 font-bold transition duration-200 mt-2"
+            >
+              Logout
+            </button>
+          </>
+        ) : (
+          <>
+            <NavLink to="/login" className={linkClass}>
+              Login
+            </NavLink>
+            <NavLink to="/signup" className={linkClass}>
+              Sign Up
+            </NavLink>
+          </>
+        )}
       </div>
-      <button
-        onClick={() => {
-          dispatch(logout());
-          navigate("/login");
-        }}
-        className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-red-500 hover:bg-red-50 font-bold transition duration-200 mt-2"
-      >
-        Logout
-      </button>
     </div>
   );
 }
