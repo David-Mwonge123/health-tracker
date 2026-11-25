@@ -319,9 +319,7 @@ function Workouts() {
           // Workout Cards
           <div className="p-5 space-y-4">
             {recentWorkouts.map((workout) => {
-              const WorkoutIcon =
-                workoutIcons[workout.type] || Activity;
-
+              
               const intensityStyles = {
                 Low: "bg-green-100 text-green-700",
                 Medium: "bg-orange-100 text-orange-700",
@@ -333,10 +331,6 @@ function Workouts() {
                   key={workout.id}
                   className="flex flex-col sm:flex-row sm:items-center gap-4 p-4 border border-gray-100 rounded-xl hover:bg-gray-50 transition"
                 >
-                  <div className="bg-green-100 p-3 rounded-xl w-fit">
-              
-                  </div>
-
                   <div className="flex-1">
                     <h3 className="font-semibold text-gray-800">
                       {workout.name}
