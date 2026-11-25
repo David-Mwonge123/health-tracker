@@ -9,7 +9,7 @@ function Sidebar() {
      {/* Logo */}
       <div className="flex items-center gap-3 mb-10">
         
-        <h1 className="text-2xl font-bold text-green-700">HealthTrack</h1>
+        <h1 className="text-2xl font-bold text-green-700"> HealthTrack</h1>
       </div>
 
       {/* Navigation Links */}
