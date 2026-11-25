@@ -1,4 +1,6 @@
-import {LayoutDashboard, Dumbbell, Utensils, Moon, BookOpen, Repeat, ChartNoAxesCombined, Bell, User, Target
+
+import { Link } from "react-router-dom";
+import {LayoutDashboard, Dumbbell, Utensils, Moon, BookOpen, Repeat, ChartNoAxesCombined, Bell, User, Target,
 } from "lucide-react";
 
 function Sidebar() {
@@ -6,12 +8,9 @@ function Sidebar() {
     <>
      <div className="w-64 min-h-screen bg-white border-r border-gray-200 flex flex-col p-5">
 
-      {/* Logo */}
+     {/* Logo */}
       <div className="flex items-center gap-3 mb-10">
-        <div className="bg-green-100 p-2 rounded-xl">
-          <HeartPulse className="text-green-600" size={28} />
-        </div>
-
+        
         <h1 className="text-2xl font-bold text-green-700">HealthTrack</h1>
       </div>
 
