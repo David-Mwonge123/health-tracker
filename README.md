@@ -1,5 +1,6 @@
 # HEALTHTRACK — Personal Health & Wellness Tracker
 **Live Demo:** https://health-tracker-snowy-seven.vercel.app
+
 HEALTHTRACK is a web app that helps users track their daily health habits in one place. Users can log workouts, meals, water, sleep, mood, and habits, set daily goals, view their progress over time, and get reminders to stay on track.
 
 All data is stored locally in the browser using Redux + localStorage, so the app works without a backend and keeps working after refresh.
