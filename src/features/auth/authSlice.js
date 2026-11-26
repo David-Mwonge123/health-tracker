@@ -40,6 +40,20 @@ const authSlice = createSlice({
       state.error = null;
       localStorage.setItem("health-user", JSON.stringify(state.user));
     },
+    updateUserName: (state, action) => {
+      if (!state.user) return;
+
+      state.user.name = action.payload;
+
+      const account = state.users.find((user) => user.id === state.user.id);
+
+      if (account) {
+        account.name = action.payload;
+      }
+
+      localStorage.setItem("health-user", JSON.stringify(state.user));
+      localStorage.setItem("health-users", JSON.stringify(state.users));
+    },
     logout: (state) => {
       state.user = null;
       state.error = null;
@@ -51,5 +65,11 @@ const authSlice = createSlice({
   },
 });
 
-export const { signup, login, logout, clearError } = authSlice.actions;
+export const {
+  signup,
+  login,
+  logout,
+  clearError,
+  updateUserName,
+} = authSlice.actions;
 export default authSlice.reducer;
