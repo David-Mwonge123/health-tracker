@@ -376,7 +376,7 @@ export default function MoodJournal() {
                     <button
                       type="button"
                       onClick={() => deleteEntry(entry.id)}
-                      className="rounded-lg border border-gray-200 px-3 py-2 text-xs font-medium text-gray-600 transition hover:border-red-200 hover:bg-red-50 hover:text-red-500"
+                      className="rounded-lg border border-gray-200 px-3 py-2 text-xs font-medium text-red-600 transition hover:border-red-200 hover:bg-red-50 hover:text-red-500"
                     >
                       Delete
                     </button>
