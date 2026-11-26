@@ -57,7 +57,7 @@ export default function Reminders() {
     };
 
     check();
-    const interval = setInterval(check, 30000); // check every 30s
+    const interval = setInterval(check, 5000); // check every 5s
     return () => clearInterval(interval);
   }, [reminders, alertedToday]);
 
@@ -152,7 +152,7 @@ export default function Reminders() {
             </button>
             <button
               onClick={() => dispatch(deleteReminder(r.id))}
-              className="text-red-500 text-sm font-bold"
+              className="p-2  text-sm text-red-600 hover:bg-red-50 rounded-lg"
             >
               Delete
             </button>

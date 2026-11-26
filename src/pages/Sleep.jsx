@@ -258,10 +258,10 @@ function Sleep() {
                       <div className="flex gap-3">
 
                         <button
-                          onClick={() => handleEdit(record)} className="text-green-600 hover:text-green-800 font-medium"> Edit
+                          onClick={() => handleEdit(record)} className="p-2  text-sm text-green-600 hover:bg-green-50 rounded-lg"> Edit
                         </button>
 
-                        <button onClick={() => handleDelete(record.id)} className="text-red-500 hover:text-red-700 font-medium" >Delete
+                        <button onClick={() => handleDelete(record.id)} className="p-2  text-sm text-red-600 hover:bg-red-50 rounded-lg" >Delete
                         </button>
 
                       </div>
