@@ -7,6 +7,7 @@ import workoutReducer from "../features/workouts/workoutsSlice";
 import habitReducer from "../features/habits/habitSlice";
 import reminderReducer from "../features/reminders/reminderSlice";
 import authReducer from "../features/auth/authSlice";
+import sleepReducer from "../features/sleep/sleepSlice"
 
 let preloadedState;
 try {
@@ -25,6 +26,7 @@ export const store = configureStore({
     habits: habitReducer,
     reminders: reminderReducer,
     auth: authReducer,
+    sleep: sleepReducer,
   },
   preloadedState,
 });
