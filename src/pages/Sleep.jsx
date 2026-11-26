@@ -119,7 +119,7 @@ function Sleep() {
       {/* Page Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-green-700"> Sleep Log </h1>
+          <h1 className="text-2xl font-bold text-green-700"> Sleep Schedule </h1>
 
         </div>
 
