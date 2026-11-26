@@ -152,7 +152,7 @@ export default function Reminders() {
             </button>
             <button
               onClick={() => dispatch(deleteReminder(r.id))}
-              className="text-red-500 text-sm font-bold"
+              className="p-2  text-sm text-red-600 hover:bg-red-50 rounded-lg"
             >
               Delete
             </button>
