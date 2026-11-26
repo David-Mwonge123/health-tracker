@@ -1,3 +1,4 @@
+
 import { configureStore } from "@reduxjs/toolkit";
 
 import settingsReducer from "../features/settings/settingsSlice";
@@ -10,10 +11,23 @@ import authReducer from "../features/auth/authSlice";
 import sleepReducer from "../features/sleep/sleepSlice"
 
 let preloadedState;
+
 try {
   const saved = localStorage.getItem("health-tracker-state");
+
   preloadedState = saved ? JSON.parse(saved) : undefined;
-} catch {
+
+  // Ensure older saved data has the required water state
+  if (preloadedState) {
+    preloadedState.meals = {
+      dailyGoal: 2500,
+      entries: [],
+      ...preloadedState.meals,
+      waterEntries: preloadedState.meals?.waterEntries || []
+    };
+  }
+} catch (error) {
+  console.error("Error loading saved state:", error);
   preloadedState = undefined;
 }
 
@@ -30,6 +44,7 @@ export const store = configureStore({
   },
   preloadedState,
 });
+
 store.subscribe(() => {
   localStorage.setItem(
     "health-tracker-state",
