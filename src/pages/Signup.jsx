@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
 import { signup, clearError } from "../features/auth/authSlice";
@@ -7,17 +7,18 @@ export default function Signup() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { error } = useSelector((state) => state.auth);
+  const { error, user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user) navigate("/");
+  }, [user, navigate]);
 
   const handleSignup = (e) => {
     e.preventDefault();
     dispatch(clearError());
     dispatch(signup({ name, email, password }));
-    setTimeout(() => {
-      if (localStorage.getItem("health-user")) navigate("/");
-    }, 100);
   };
 
   return (
