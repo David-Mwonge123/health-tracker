@@ -15,7 +15,7 @@ function Sidebar() {
     }`;
 
   return (
-    <div className="w-64 min-h-screen bg-white border-r border-gray-200 flex flex-col p-5">
+    <div className="w-64 min-h-screen bg-white border-r border-gray-200 hidden  md:flex flex-col p-5">
       {/* Logo */}
       <div className="flex items-center gap-3 mb-10">
         <h1 className="text-2xl font-bold text-green-700">HEALTHTRACK</h1>
