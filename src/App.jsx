@@ -33,7 +33,7 @@ function App() {
 
   return (
     <div className={theme === "dark" ? "bg-gray-900 text-white" : "bg-gray-50"}>
-      <div className="flex min-h-screen">
+      <div className="flex items-start min-h-screen">
         {!hideSidebar && <Sidebar />}
 
         <main className="flex-1 p-6 md:p-8 max-w-5xl mx-auto w-full">
