@@ -1,1 +1,49 @@
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+.dark .bg-white {
+  background-color: #1f2937 !important; /* gray-800 */
+}
+.dark .bg-gray-50 {
+  background-color: #111827 !important; /* gray-900 */
+}
+.dark .bg-gray-100 {
+  background-color: #1f2937 !important;
+}
+.dark .bg-green-50 {
+  background-color: #1f2937 !important;
+}
+.dark .bg-green-100 {
+  background-color: #374151 !important;
+}
+
+.dark .text-gray-900,
+.dark .text-gray-800 {
+  color: #f9fafb !important;
+}
+.dark .text-gray-700,
+.dark .text-gray-600 {
+  color: #d1d5db !important; /* gray-300 */
+}
+.dark .text-gray-500,
+.dark .text-gray-400 {
+  color: #9ca3af !important; /* gray-400 */
+}
+
+.dark .border-gray-200,
+.dark .border-gray-100 {
+  border-color: #374151 !important; /* gray-700 */
+}
+
+.dark .divide-gray-200 > * + * {
+  border-color: #374151 !important;
+}
+
+/* Inputs, selects */
+.dark input,
+.dark select,
+.dark textarea {
+  background-color: #374151 !important;
+  color: #f9fafb !important;
+  border-color: #4b5563 !important;
+}
