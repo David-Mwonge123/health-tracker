@@ -348,7 +348,7 @@ function Workouts() {
 
                     <button
                       onClick={() => handleEdit(workout)}
-                      className="p-2  text-sm text-blue-600 hover:bg-blue-50 rounded-lg"
+                      className="p-2  text-sm text-green-600 hover:bg-green-50 rounded-lg"
                       title="Edit workout"
                     >
                     Edit
