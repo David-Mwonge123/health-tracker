@@ -12,7 +12,7 @@ function Sleep() {
   const sleepRecords = useSelector(
     (state) => state.sleep.sleepRecords
   );
-
+const sleepGoal = useSelector ((state) => state.settings.dailySleepGoal || 8);
   // Form visibility
   const [showForm, setShowForm] = useState(false);
 
@@ -144,7 +144,7 @@ function Sleep() {
         <div className="bg-white p-5 rounded-xl shadow-sm border border-gray-100">
           <p className="text-sm text-gray-500"> Sleep Goal</p>
 
-          <h2 className="text-2xl font-bold text-gray-800 mt-2"> 8 hrs </h2>
+          <h2 className="text-2xl font-bold text-gray-800 mt-2"> {sleepGoal} hrs </h2>
 
           <p className="text-sm text-gray-400 mt-1"> Daily target </p>
         </div>
