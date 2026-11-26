@@ -1,3 +1,4 @@
+
 import { useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 
@@ -83,13 +84,12 @@ export default function Progress({
     (state) => state.workouts?.workouts || []
   );
 
-  // Sleep: use the prop if the parent passes it, otherwise fall back to the store.
-  // Ask your teammate for the real slice name and array key, then replace
-  // "sleep" and "entries" below if they differ.
+  // Sleep records from the sleep slice
   const sleepFromStore = useSelector(
-    (state) => state.sleep?.entries
+    (state) => state.sleep?.sleepRecords || []
   );
-  const sleepEntries = sleepFromProps ?? sleepFromStore ?? [];
+
+  const sleepEntries = sleepFromProps ?? sleepFromStore;
 
   const meals = useSelector(
     (state) => state.meals?.entries || []
@@ -162,7 +162,8 @@ export default function Progress({
       if (!records.length) return 0;
 
       return records.reduce(
-        (sum, item) => sum + Number(item.hours || 0),
+        (sum, item) =>
+          sum + Number(item.duration ?? item.hours ?? 0),
         0
       ) / records.length;
     }
