@@ -1,7 +1,13 @@
+
 import { useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 
 const getDateKey = (date) => {
+  // Plain "YYYY-MM-DD" strings are already local dates, so return them as-is
+  if (typeof date === "string" && /^\d{4}-\d{2}-\d{2}$/.test(date)) {
+    return date;
+  }
+
   const d = new Date(date);
 
   return new Date(
@@ -71,9 +77,20 @@ function WeeklyChart({ title, unit, data, color, periodLabel }) {
 }
 
 export default function Progress({
-  workouts = [],
-  sleepEntries = [],
+  sleepEntries: sleepFromProps,
 }) {
+  // Workouts come from Redux (same source as Workouts.jsx)
+  const workouts = useSelector(
+    (state) => state.workouts?.workouts || []
+  );
+
+  // Sleep records from the sleep slice
+  const sleepFromStore = useSelector(
+    (state) => state.sleep?.sleepRecords || []
+  );
+
+  const sleepEntries = sleepFromProps ?? sleepFromStore;
+
   const meals = useSelector(
     (state) => state.meals?.entries || []
   );
@@ -145,7 +162,8 @@ export default function Progress({
       if (!records.length) return 0;
 
       return records.reduce(
-        (sum, item) => sum + Number(item.hours || 0),
+        (sum, item) =>
+          sum + Number(item.duration ?? item.hours ?? 0),
         0
       ) / records.length;
     }

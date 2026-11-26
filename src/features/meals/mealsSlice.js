@@ -4,6 +4,7 @@ import { createSlice, nanoid } from "@reduxjs/toolkit";
 const getToday = () => {
   const d = new Date();
   const offset = d.getTimezoneOffset();
+
   return new Date(d.getTime() - offset * 60000)
     .toISOString()
     .slice(0, 10);
@@ -11,7 +12,8 @@ const getToday = () => {
 
 const initialState = {
   dailyGoal: 2500,
-  entries: []
+  entries: [],
+  waterEntries: []
 };
 
 const mealsSlice = createSlice({
@@ -62,7 +64,7 @@ const mealsSlice = createSlice({
         return {
           payload: {
             id: nanoid(),
-            amount,
+            amount: Number(amount),
             date: getToday(),
             createdAt: new Date().toISOString()
           }
@@ -71,15 +73,20 @@ const mealsSlice = createSlice({
     },
 
     removeWater(state, action) {
-      let remaining = action.payload;
+      let remaining = Number(action.payload);
       const today = getToday();
+
+      if (!Number.isFinite(remaining) || remaining <= 0) return;
 
       for (let i = state.waterEntries.length - 1; i >= 0; i--) {
         const entry = state.waterEntries[i];
 
         if (entry.date !== today) continue;
 
-        const reduction = Math.min(entry.amount, remaining);
+        const reduction = Math.min(
+          Number(entry.amount) || 0,
+          remaining
+        );
 
         entry.amount -= reduction;
         remaining -= reduction;
@@ -93,7 +100,11 @@ const mealsSlice = createSlice({
     },
 
     setWaterGoal(state, action) {
-      state.dailyGoal = Math.max(1, Number(action.payload) || 2500);
+      const goal = Number(action.payload);
+
+      if (Number.isFinite(goal) && goal > 0) {
+        state.dailyGoal = goal;
+      }
     }
   }
 });
