@@ -1,4 +1,3 @@
-
 import { useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 
@@ -17,12 +16,12 @@ function WeeklyChart({ title, unit, data, color, periodLabel }) {
   );
 
   return (
-    <section className="rounded-2xl border border-slate-800 bg-slate-900 p-5 shadow-sm">
+    <section className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
       <div className="mb-6">
-        <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+        <span className="text-xs font-semibold uppercase tracking-wider text-gray-500">
           {periodLabel}
         </span>
-        <h2 className="mt-1 text-lg font-semibold text-white">
+        <h2 className="mt-1 text-lg font-semibold text-gray-800">
           {title}
         </h2>
       </div>
@@ -38,7 +37,7 @@ function WeeklyChart({ title, unit, data, color, periodLabel }) {
               className="flex h-full min-w-0 flex-1 flex-col items-center justify-end gap-2"
               key={item.date}
             >
-              <span className="whitespace-nowrap text-[10px] text-slate-400">
+              <span className="whitespace-nowrap text-[10px] text-gray-500">
                 {item.value > 0
                   ? Number(item.value.toFixed(1))
                   : "–"}
@@ -56,7 +55,7 @@ function WeeklyChart({ title, unit, data, color, periodLabel }) {
                 />
               </div>
 
-              <span className="text-[10px] text-slate-500">
+              <span className="text-[10px] text-gray-500">
                 {item.label}
               </span>
             </div>
@@ -64,7 +63,7 @@ function WeeklyChart({ title, unit, data, color, periodLabel }) {
         })}
       </div>
 
-      <p className="mt-3 text-xs text-slate-500">
+      <p className="mt-3 text-xs text-gray-500">
         Values in {unit}
       </p>
     </section>
@@ -241,33 +240,33 @@ export default function Progress({
   ];
 
   return (
-    <main className="min-h-screen space-y-6 bg-slate-950 p-4 text-white sm:p-6 lg:p-8">
+    <main className="space-y-6 p-4 text-gray-800 sm:p-6 lg:p-8">
 
       {/* PAGE HEADER */}
       <header className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <span className="text-xs font-semibold uppercase tracking-widest text-blue-400">
+          <span className="text-xs font-semibold uppercase tracking-widest text-green-600">
             Your wellness journey
           </span>
 
-          <h1 className="mt-1 text-2xl font-bold tracking-tight sm:text-3xl">
+          <h1 className="mt-1 text-2xl font-bold tracking-tight text-green-700 sm:text-3xl">
             Progress
           </h1>
 
-          <p className="mt-1 text-sm text-slate-400">
+          <p className="mt-1 text-sm text-gray-500">
             See how your daily habits are developing.
           </p>
         </div>
 
         {/* PERIOD SELECTOR */}
-        <div className="flex rounded-xl border border-slate-800 bg-slate-900 p-1">
+        <div className="flex rounded-xl border border-gray-200 bg-white p-1">
           <button
             type="button"
             onClick={() => setPeriod("week")}
             className={`rounded-lg px-4 py-2 text-sm font-medium transition ${
               period === "week"
-                ? "bg-blue-600 text-white shadow"
-                : "text-slate-400 hover:text-white"
+                ? "bg-green-600 text-white shadow"
+                : "text-gray-500 hover:text-gray-800"
             }`}
           >
             7 Days
@@ -278,8 +277,8 @@ export default function Progress({
             onClick={() => setPeriod("month")}
             className={`rounded-lg px-4 py-2 text-sm font-medium transition ${
               period === "month"
-                ? "bg-blue-600 text-white shadow"
-                : "text-slate-400 hover:text-white"
+                ? "bg-green-600 text-white shadow"
+                : "text-gray-500 hover:text-gray-800"
             }`}
           >
             30 Days
@@ -292,15 +291,15 @@ export default function Progress({
         {summaryCards.map((card) => (
           <div
             key={card.label}
-            className="rounded-2xl border border-slate-800 bg-slate-900 p-4 sm:p-5"
+            className="rounded-2xl border border-gray-200 bg-white p-4 sm:p-5"
           >
             <span className="text-2xl">{card.icon}</span>
 
-            <p className="mt-3 text-xs font-medium text-slate-400 sm:text-sm">
+            <p className="mt-3 text-xs font-medium text-gray-500 sm:text-sm">
               {card.label}
             </p>
 
-            <strong className="mt-1 block text-xl font-bold sm:text-2xl">
+            <strong className="mt-1 block text-xl font-bold text-gray-800 sm:text-2xl">
               {card.value}
             </strong>
           </div>
@@ -308,19 +307,19 @@ export default function Progress({
       </section>
 
       {/* MOOD SUMMARY */}
-      <section className="flex items-center justify-between rounded-2xl border border-slate-800 bg-slate-900 p-5 sm:p-6">
+      <section className="flex items-center justify-between rounded-2xl border border-gray-200 bg-white p-5 sm:p-6">
         <div>
-          <span className="text-xs font-semibold uppercase tracking-wider text-emerald-400">
+          <span className="text-xs font-semibold uppercase tracking-wider text-green-600">
             Mood trend
           </span>
 
-          <h2 className="mt-2 text-2xl font-bold">
+          <h2 className="mt-2 text-2xl font-bold text-gray-800">
             {moodAverage > 0
               ? `${moodAverage.toFixed(1)} / 5`
               : "No mood data"}
           </h2>
 
-          <p className="mt-1 text-sm text-slate-400">
+          <p className="mt-1 text-sm text-gray-500">
             Average recorded mood · {periodLabel}
           </p>
         </div>
@@ -343,7 +342,7 @@ export default function Progress({
           title="Workout activity"
           unit="minutes"
           data={workoutData}
-          color="#8b5cf6"
+          color="#16a34a"
           periodLabel={periodLabel}
         />
 
@@ -351,7 +350,7 @@ export default function Progress({
           title="Water intake"
           unit="litres"
           data={waterData}
-          color="#38bdf8"
+          color="#22c55e"
           periodLabel={periodLabel}
         />
 
@@ -359,7 +358,7 @@ export default function Progress({
           title="Sleep duration"
           unit="hours"
           data={sleepData}
-          color="#a78bfa"
+          color="#15803d"
           periodLabel={periodLabel}
         />
 
@@ -367,7 +366,7 @@ export default function Progress({
           title="Mood trend"
           unit="mood score (1–5)"
           data={moodData}
-          color="#34d399"
+          color="#4ade80"
           periodLabel={periodLabel}
         />
 

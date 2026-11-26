@@ -7,7 +7,6 @@ import {
   deleteMood
 } from "../features/mood/moodSlice";
 
-
 const today = () => {
   const d = new Date();
   return new Date(d.getTime() - d.getTimezoneOffset() * 60000)
@@ -117,20 +116,20 @@ export default function MoodJournal() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 px-4 py-6 text-slate-100 sm:px-6 lg:px-8">
+    <div className="px-4 py-6 text-gray-800 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-4xl space-y-6">
 
         {/* PAGE HEADING */}
         <div className="space-y-2">
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-400">
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-green-600">
             Mental wellness
           </p>
 
-          <h1 className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+          <h1 className="text-2xl font-semibold tracking-tight text-green-700 sm:text-3xl">
             Mood Journal
           </h1>
 
-          <p className="text-sm text-slate-400">
+          <p className="text-sm text-gray-500">
             Take a moment to check in with yourself.
           </p>
         </div>
@@ -138,18 +137,18 @@ export default function MoodJournal() {
         {/* MOOD FORM */}
         <form
           onSubmit={handleSubmit}
-          className="rounded-2xl border border-slate-800 bg-slate-900 p-5 shadow-sm sm:p-6"
+          className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm sm:p-6"
         >
           <div className="mb-6">
-            <p className="text-xs font-semibold uppercase tracking-wider text-blue-400">
+            <p className="text-xs font-semibold uppercase tracking-wider text-green-600">
               Daily check-in
             </p>
 
-            <h2 className="mt-2 text-xl font-semibold text-white">
+            <h2 className="mt-2 text-xl font-semibold text-gray-800">
               {editingId ? "Edit your entry" : "How are you feeling?"}
             </h2>
 
-            <p className="mt-1 text-sm text-slate-400">
+            <p className="mt-1 text-sm text-gray-500">
               Choose the option that best describes your day.
             </p>
           </div>
@@ -167,19 +166,19 @@ export default function MoodJournal() {
                   aria-pressed={selected}
                   className={`rounded-xl border p-3 text-left transition ${
                     selected
-                      ? "border-blue-500 bg-blue-500/10"
-                      : "border-slate-700 bg-slate-800 hover:border-slate-500"
+                      ? "border-green-600 bg-green-50"
+                      : "border-gray-200 bg-white hover:border-green-600"
                   }`}
                 >
                   <span
                     className={`block text-sm font-semibold ${
-                      selected ? "text-blue-400" : "text-slate-200"
+                      selected ? "text-green-700" : "text-gray-800"
                     }`}
                   >
                     {item.name}
                   </span>
 
-                  <span className="mt-1 block text-xs text-slate-500">
+                  <span className="mt-1 block text-xs text-gray-500">
                     {item.description}
                   </span>
                 </button>
@@ -192,12 +191,12 @@ export default function MoodJournal() {
             <div className="mb-3 flex items-center justify-between">
               <label
                 htmlFor="energy"
-                className="text-sm font-medium text-slate-200"
+                className="text-sm font-medium text-gray-800"
               >
                 Energy level
               </label>
 
-              <span className="text-sm font-semibold text-blue-400">
+              <span className="text-sm font-semibold text-green-600">
                 {form.energy}/10
               </span>
             </div>
@@ -211,10 +210,10 @@ export default function MoodJournal() {
               onChange={e =>
                 updateForm("energy", Number(e.target.value))
               }
-              className="h-2 w-full cursor-pointer accent-blue-500"
+              className="h-2 w-full cursor-pointer accent-green-600"
             />
 
-            <div className="mt-2 flex justify-between text-xs text-slate-500">
+            <div className="mt-2 flex justify-between text-xs text-gray-500">
               <span>Exhausted</span>
               <span>Energetic</span>
             </div>
@@ -225,12 +224,12 @@ export default function MoodJournal() {
             <div className="mb-3 flex items-center justify-between">
               <label
                 htmlFor="stress"
-                className="text-sm font-medium text-slate-200"
+                className="text-sm font-medium text-gray-800"
               >
                 Stress level
               </label>
 
-              <span className="text-sm font-semibold text-blue-400">
+              <span className="text-sm font-semibold text-green-600">
                 {form.stress}/10
               </span>
             </div>
@@ -244,10 +243,10 @@ export default function MoodJournal() {
               onChange={e =>
                 updateForm("stress", Number(e.target.value))
               }
-              className="h-2 w-full cursor-pointer accent-blue-500"
+              className="h-2 w-full cursor-pointer accent-green-600"
             />
 
-            <div className="mt-2 flex justify-between text-xs text-slate-500">
+            <div className="mt-2 flex justify-between text-xs text-gray-500">
               <span>Relaxed</span>
               <span>Very stressed</span>
             </div>
@@ -257,10 +256,10 @@ export default function MoodJournal() {
           <div className="mt-7">
             <label
               htmlFor="moodNotes"
-              className="mb-2 block text-sm font-medium text-slate-200"
+              className="mb-2 block text-sm font-medium text-gray-800"
             >
               Your thoughts
-              <span className="ml-2 font-normal text-slate-500">
+              <span className="ml-2 font-normal text-gray-500">
                 (optional)
               </span>
             </label>
@@ -271,7 +270,7 @@ export default function MoodJournal() {
               placeholder="What happened today? How are you feeling?"
               value={form.notes}
               onChange={e => updateForm("notes", e.target.value)}
-              className="w-full resize-y rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-sm text-white outline-none placeholder:text-slate-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+              className="w-full resize-y rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-800 outline-none placeholder:text-gray-400 focus:border-green-600 focus:ring-1 focus:ring-green-600"
             />
           </div>
 
@@ -279,7 +278,7 @@ export default function MoodJournal() {
           <div className="mt-6 flex flex-wrap gap-3">
             <button
               type="submit"
-              className="rounded-xl bg-blue-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-blue-500"
+              className="rounded-xl bg-green-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-green-700"
             >
               {editingId ? "Update entry" : "Save mood entry"}
             </button>
@@ -288,7 +287,7 @@ export default function MoodJournal() {
               <button
                 type="button"
                 onClick={cancelEdit}
-                className="rounded-xl border border-slate-700 px-5 py-3 text-sm font-medium text-slate-300 transition hover:bg-slate-800"
+                className="rounded-xl border border-gray-200 px-5 py-3 text-sm font-medium text-gray-600 transition hover:bg-gray-50"
               >
                 Cancel
               </button>
@@ -297,35 +296,35 @@ export default function MoodJournal() {
         </form>
 
         {/* TODAY'S HISTORY */}
-        <section className="rounded-2xl border border-slate-800 bg-slate-900 p-5 shadow-sm sm:p-6">
+        <section className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm sm:p-6">
           <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-wider text-blue-400">
+              <p className="text-xs font-semibold uppercase tracking-wider text-green-600">
                 Your records
               </p>
 
-              <h2 className="mt-2 text-xl font-semibold text-white">
+              <h2 className="mt-2 text-xl font-semibold text-gray-800">
                 Today's mood history
               </h2>
             </div>
 
-            <span className="rounded-full border border-slate-700 bg-slate-800 px-3 py-1.5 text-xs font-medium text-slate-300">
+            <span className="rounded-full border border-gray-200 bg-gray-100 px-3 py-1.5 text-xs font-medium text-gray-600">
               {todayEntries.length} entries
             </span>
           </div>
 
           {todayEntries.length === 0 ? (
-            <div className="rounded-xl border border-dashed border-slate-700 px-4 py-10 text-center">
-              <h3 className="text-base font-medium text-slate-300">
+            <div className="rounded-xl border border-dashed border-gray-200 px-4 py-10 text-center">
+              <h3 className="text-base font-medium text-gray-700">
                 No mood entries yet
               </h3>
 
-              <p className="mt-2 text-sm text-slate-500">
+              <p className="mt-2 text-sm text-gray-500">
                 Your daily check-ins will appear here.
               </p>
             </div>
           ) : (
-            <div className="divide-y divide-slate-800">
+            <div className="divide-y divide-gray-200">
               {todayEntries.map(entry => (
                 <div
                   key={entry.id}
@@ -333,26 +332,26 @@ export default function MoodJournal() {
                 >
                   <div className="min-w-0 flex-1">
                     <div className="flex flex-wrap items-center gap-2">
-                      <h3 className="font-semibold text-white">
+                      <h3 className="font-semibold text-gray-800">
                         {entry.mood}
                       </h3>
 
-                      <span className="rounded-md bg-slate-800 px-2 py-1 text-xs text-slate-400">
+                      <span className="rounded-md bg-gray-100 px-2 py-1 text-xs text-gray-600">
                         {entry.energy}/10 energy
                       </span>
 
-                      <span className="rounded-md bg-slate-800 px-2 py-1 text-xs text-slate-400">
+                      <span className="rounded-md bg-gray-100 px-2 py-1 text-xs text-gray-600">
                         {entry.stress}/10 stress
                       </span>
                     </div>
 
                     {entry.notes && (
-                      <p className="mt-3 whitespace-pre-wrap break-words text-sm leading-relaxed text-slate-400">
+                      <p className="mt-3 whitespace-pre-wrap break-words text-sm leading-relaxed text-gray-500">
                         {entry.notes}
                       </p>
                     )}
 
-                    <p className="mt-3 text-xs text-slate-500">
+                    <p className="mt-3 text-xs text-gray-500">
                       {entry.createdAt
                         ? new Date(entry.createdAt).toLocaleTimeString(
                             [],
@@ -369,7 +368,7 @@ export default function MoodJournal() {
                     <button
                       type="button"
                       onClick={() => editEntry(entry)}
-                      className="rounded-lg border border-slate-700 px-3 py-2 text-xs font-medium text-slate-300 transition hover:border-blue-500 hover:text-blue-400"
+                      className="rounded-lg border border-gray-200 px-3 py-2 text-xs font-medium text-gray-600 transition hover:border-green-600 hover:text-green-600"
                     >
                       Edit
                     </button>
@@ -377,7 +376,7 @@ export default function MoodJournal() {
                     <button
                       type="button"
                       onClick={() => deleteEntry(entry.id)}
-                      className="rounded-lg border border-slate-700 px-3 py-2 text-xs font-medium text-slate-300 transition hover:border-red-500 hover:text-red-400"
+                      className="rounded-lg border border-gray-200 px-3 py-2 text-xs font-medium text-gray-600 transition hover:border-red-200 hover:bg-red-50 hover:text-red-500"
                     >
                       Delete
                     </button>

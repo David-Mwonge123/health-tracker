@@ -6,15 +6,15 @@ import moodReducer from "../features/mood/moodSlice";
 import workoutReducer from "../features/workouts/workoutsSlice";
 import habitReducer from "../features/habits/habitSlice";
 import reminderReducer from "../features/reminders/reminderSlice";
-import sleepReducer from "../features/sleep/sleepSlice";
+import authReducer from "../features/auth/authSlice";
 
 let preloadedState;
-try{const saved = localStorage.getItem("health-tracker-state");
- preloadedState = saved ? JSON.parse(saved) : undefined;
-}
- catch{
+try {
+  const saved = localStorage.getItem("health-tracker-state");
+  preloadedState = saved ? JSON.parse(saved) : undefined;
+} catch {
   preloadedState = undefined;
- }
+}
 
 export const store = configureStore({
   reducer: {
@@ -24,7 +24,7 @@ export const store = configureStore({
     workouts: workoutReducer,
     habits: habitReducer,
     reminders: reminderReducer,
-    sleep: sleepReducer,
+    auth: authReducer,
   },
   preloadedState,
 });
