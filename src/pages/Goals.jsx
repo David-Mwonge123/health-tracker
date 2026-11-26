@@ -6,19 +6,39 @@ export default function Goals() {
   );
   const habits = useSelector((state) => state.habits?.habits || []);
   const workouts = useSelector((state) => state.workouts?.workouts || []);
-  const water = useSelector((state) => state.meals?.water || 0);
+
+  // --- FIXED: Water from MealsWater (same as MealsWater.jsx) ---
+  const waterEntries = useSelector((state) => state.meals?.waterEntries || []);
+  const dailyGoal = useSelector((state) => state.meals?.dailyGoal || 2500);
+
+  // --- FIXED: Mood from MoodJournal (same as MoodJournal.jsx) ---
+  const moodEntries = useSelector((state) => state.mood?.entries || []);
   const sleepEntries = useSelector((state) => state.sleep?.entries || []);
 
+  const todayStr = new Date(
+    new Date().getTime() - new Date().getTimezoneOffset() * 60000
+  ).toISOString().slice(0, 10);
+
+  // Water
+  const waterConsumed = waterEntries
+    .filter((w) => w.date === todayStr)
+    .reduce((total, w) => total + Number(w.amount || 0), 0);
+  const waterGlasses = Math.floor(waterConsumed / 250);
+  const waterGoalGlasses = Math.floor(dailyGoal / 250);
+  const waterPct = dailyGoal
+    ? Math.min(100, Math.round((waterConsumed / dailyGoal) * 100))
+    : 0;
+
+  // Habits
   const habitsDone = habits.filter((h) => h.done).length;
   const habitsPct = habits.length
     ? Math.round((habitsDone / habits.length) * 100)
     : 0;
-  const waterPct = goals.water
-    ? Math.min(100, Math.round((water / goals.water) * 100))
-    : 0;
+
+  // Workouts
   const workoutPct = Math.min(100, Math.round((workouts.length / 5) * 100));
 
-  
+  // Sleep
   const avgSleep = sleepEntries.length
     ? sleepEntries.reduce((sum, s) => sum + Number(s.hours || 0), 0) / sleepEntries.length
     : 0;
@@ -26,10 +46,16 @@ export default function Goals() {
     ? Math.min(100, Math.round((avgSleep / goals.sleep) * 100))
     : 0;
 
+  // Mood - latest today
+  const todayMood = [...moodEntries]
+    .filter((m) => m.date === todayStr)
+    .sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0))[0];
+  const moodPct = todayMood ? 100 : 0;
+
   const cards = [
     {
       label: "Water Goal",
-      value: `${water} / ${goals.water} glasses`,
+      value: `${waterGlasses} / ${waterGoalGlasses} glasses`,
       pct: waterPct,
     },
     {
@@ -47,11 +73,15 @@ export default function Goals() {
       value: `${avgSleep.toFixed(1)} / ${goals.sleep} hrs`,
       pct: sleepPct,
     },
+    {
+      label: "Mood Today",
+      value: todayMood ? `${todayMood.mood} - ${todayMood.energy}/10 energy` : "Not logged yet",
+      pct: moodPct,
+    },
   ];
 
-
   const overall = Math.round(
-    (waterPct + habitsPct + workoutPct + sleepPct) / 4
+    (waterPct + habitsPct + workoutPct + sleepPct + moodPct) / 5
   );
   const message =
     overall === 100
@@ -64,7 +94,6 @@ export default function Goals() {
     <div>
       <h1 className="text-3xl font-bold text-green-700 mb-8">Goals</h1>
 
-      
       <div className="bg-white p-6 rounded-xl border border-gray-200 mb-6">
         <div className="flex justify-between items-center mb-3">
           <strong className="text-gray-800">Today's Overall Progress</strong>
@@ -101,10 +130,9 @@ export default function Goals() {
               <small className="text-green-700 font-bold block">
                 {c.pct}%
               </small>
-              
               {c.pct === 100 && (
                 <span className="text-xs bg-green-100 text-green-700 font-bold px-2 py-1 rounded-full">
-                   Completed
+                  {"\u2713"} Completed
                 </span>
               )}
             </div>
