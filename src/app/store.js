@@ -6,6 +6,7 @@ import moodReducer from "../features/mood/moodSlice";
 import workoutReducer from "../features/workouts/workoutsSlice";
 import habitReducer from "../features/habits/habitSlice";
 import reminderReducer from "../features/reminders/reminderSlice";
+import sleepReducer from "../features/sleep/sleepSlice";
 
 let preloadedState;
 try{const saved = localStorage.getItem("health-tracker-state");
@@ -23,6 +24,7 @@ export const store = configureStore({
     workouts: workoutReducer,
     habits: habitReducer,
     reminders: reminderReducer,
+    sleep: sleepReducer,
   },
   preloadedState,
 });
