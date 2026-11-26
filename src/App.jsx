@@ -17,6 +17,7 @@ import Profile from "./components/Profile";
 import Progress from "./components/progress/Progress";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import Sleep from "./pages/Sleep";
 
 function Protected({ children }) {
   const user = useSelector((state) => state.auth.user);
@@ -66,7 +67,14 @@ function App() {
                 </Protected>
               }
             />
-
+            <Route
+              path="/sleep"
+              element={
+                <Protected>
+                  <Sleep />
+                </Protected>
+              }
+            />
             <Route
               path="/mood-journal"
               element={
