@@ -57,7 +57,7 @@ export default function Reminders() {
     };
 
     check();
-    const interval = setInterval(check, 30000); // check every 30s
+    const interval = setInterval(check, 5000); // check every 5s
     return () => clearInterval(interval);
   }, [reminders, alertedToday]);
 
