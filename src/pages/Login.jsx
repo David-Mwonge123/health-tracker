@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
 import { login, clearError } from "../features/auth/authSlice";
@@ -6,19 +6,18 @@ import { login, clearError } from "../features/auth/authSlice";
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { error } = useSelector((state) => state.auth);
+  const { error, user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user) navigate("/");
+  }, [user, navigate]);
 
   const handleLogin = (e) => {
     e.preventDefault();
     dispatch(clearError());
     dispatch(login({ email, password }));
-
-    setTimeout(() => {
-      const saved = localStorage.getItem("health-user");
-      if (saved) navigate("/");
-    }, 100);
   };
 
   return (
