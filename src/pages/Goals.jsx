@@ -1,3 +1,4 @@
+
 import { useSelector } from "react-redux";
 
 export default function Goals() {
@@ -32,6 +33,7 @@ export default function Goals() {
 
   // Habits
   const habitsDone = habits.filter((h) => h.done).length;
+
   const habitsPct = habits.length
     ? Math.round((habitsDone / habits.length) * 100)
     : 0;
