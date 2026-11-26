@@ -2,51 +2,24 @@
 import { useSelector } from "react-redux";
 
 export default function Goals() {
-  const goals = useSelector(
-    (state) => state.settings?.goals || { water: 8, sleep: 8 }
+  const sleepGoal = useSelector((state) => state.settings?.dailySleepGoal || 8);
+  const habits = useSelector((state) => state.habits?.habits || []);
+  const workouts = useSelector((state) => state.workouts?.workouts || []);
+
+  const waterEntries = useSelector((state) => state.meals?.waterEntries || []);
+  const dailyGoal = useSelector((state) => state.meals?.dailyGoal || 2500);
+
+  const moodEntries = useSelector((state) => state.mood?.entries || []);
+
+  const sleepRecords = useSelector(
+    (state) => state.sleep?.sleepRecords || state.sleep?.entries || [],
   );
 
-  const habits = useSelector(
-    (state) => state.habits?.habits || []
-  );
-
-  const workouts = useSelector(
-    (state) => state.workouts?.workouts ||
-      state.workouts?.entries || []
-  );
-
-  const waterEntries = useSelector(
-    (state) => state.meals?.waterEntries || []
-  );
-
-  const dailyGoal = useSelector(
-    (state) => state.meals?.dailyGoal || 2500
-  );
-
-  const moodEntries = useSelector(
-    (state) => state.mood?.entries || []
-  );
-
-  const sleepEntries = useSelector(
-    (state) => state.sleep?.sleepRecords || []
-  );
-
-  const today = new Date().toLocaleDateString("en-CA");
-
-  // Beginning of current week (Sunday)
-  const startOfWeek = new Date();
-  startOfWeek.setHours(0, 0, 0, 0);
-  startOfWeek.setDate(
-    startOfWeek.getDate() - startOfWeek.getDay()
-  );
-
-  const getDate = (date) => {
-    if (!date) return null;
-
-    const parsed = new Date(`${date}T00:00:00`);
-
-    return Number.isNaN(parsed.getTime()) ? null : parsed;
-  };
+  const todayStr = new Date(
+    new Date().getTime() - new Date().getTimezoneOffset() * 60000,
+  )
+    .toISOString()
+    .slice(0, 10);
 
   // Water
   const waterConsumed = waterEntries
@@ -73,41 +46,17 @@ export default function Goals() {
     ? Math.round((habitsDone / habits.length) * 100)
     : 0;
 
-  // Workouts this week
-  const workoutsThisWeek = workouts.filter((workout) => {
-    const date = getDate(workout.date);
+  const workoutPct = Math.min(100, Math.round((workouts.length / 5) * 100));
 
-    return date && date >= startOfWeek && date <= new Date();
-  });
-
-  const workoutPct = Math.min(
-    100,
-    Math.round((workoutsThisWeek.length / 5) * 100)
+  const todaysSleep = sleepRecords.filter((s) => s.date === todayStr);
+  const sleepHours = todaysSleep.reduce(
+    (sum, s) => sum + Number(s.duration || s.hours || 0),
+    0,
   );
-
-  // Sleep average this week
-  const sleepThisWeek = sleepEntries.filter((sleep) => {
-    const date = getDate(sleep.date);
-
-    return date && date >= startOfWeek && date <= new Date();
-  });
-
-  const averageSleep = sleepThisWeek.length
-    ? sleepThisWeek.reduce(
-        (sum, sleep) =>
-          sum + Number(sleep.duration ?? sleep.hours ?? 0),
-        0
-      ) / sleepThisWeek.length
+  const sleepPct = sleepGoal
+    ? Math.min(100, Math.round((sleepHours / sleepGoal) * 100))
     : 0;
 
-  const sleepPct = goals.sleep
-    ? Math.min(
-        100,
-        Math.round((averageSleep / goals.sleep) * 100)
-      )
-    : 0;
-
-  // Mood - latest entry today
   const todayMood = [...moodEntries]
     .filter((m) => m.date === today)
     .sort(
@@ -137,7 +86,7 @@ export default function Goals() {
     },
     {
       label: "Sleep Goal",
-      value: `${averageSleep.toFixed(1)} / ${goals.sleep} hrs average`,
+      value: `${sleepHours.toFixed(1)} / ${sleepGoal} hrs`,
       pct: sleepPct,
     },
     {
@@ -151,7 +100,7 @@ export default function Goals() {
 
   // Overall progress
   const overall = Math.round(
-    (waterPct + habitsPct + workoutPct + sleepPct + moodPct) / 5
+    (waterPct + habitsPct + workoutPct + sleepPct + moodPct) / 5,
   );
 
   const message =
@@ -163,10 +112,7 @@ export default function Goals() {
 
   return (
     <div>
-      <h1 className="text-3xl font-bold text-green-700 mb-8">
-        Goals
-      </h1>
-
+      <h1 className="text-3xl font-bold text-green-700 mb-8">Goals</h1>
       <div className="bg-white p-6 rounded-xl border border-gray-200 mb-6">
         <div className="flex justify-between items-center mb-3">
           <strong className="text-gray-800">
@@ -189,7 +135,6 @@ export default function Goals() {
           {message}
         </p>
       </div>
-
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
         {cards.map((c) => (
           <div
@@ -205,19 +150,14 @@ export default function Goals() {
                 {c.value}
               </span>
             </div>
-
             <div className="w-full bg-gray-100 rounded-full h-3 overflow-hidden">
               <div
                 className="bg-green-600 h-3 rounded-full transition-all"
                 style={{ width: `${c.pct}%` }}
               />
             </div>
-
             <div className="flex justify-between items-center mt-2">
-              <small className="text-green-700 font-bold block">
-                {c.pct}%
-              </small>
-
+              <small className="text-green-700 font-bold block">{c.pct}%</small>
               {c.pct === 100 && (
                 <span className="text-xs bg-green-100 text-green-700 font-bold px-2 py-1 rounded-full">
                   {"\u2713"} Completed
