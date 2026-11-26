@@ -1,5 +1,11 @@
 
-import { configureStore } from "@reduxjs/toolkit";
+import {
+  combineReducers,
+  configureStore,
+  createAction,
+} from "@reduxjs/toolkit";
+
+export const clearHealthData = createAction("app/clearHealthData");
 
 import settingsReducer from "../features/settings/settingsSlice";
 import mealsReducer from "../features/meals/mealsSlice";
@@ -31,17 +37,36 @@ try {
   preloadedState = undefined;
 }
 
+const appReducer = combineReducers({
+  settings: settingsReducer,
+  meals: mealsReducer,
+  mood: moodReducer,
+  workouts: workoutReducer,
+  habits: habitReducer,
+  reminders: reminderReducer,
+  auth: authReducer,
+  sleep: sleepReducer,
+});
+
+const rootReducer = (state, action) => {
+  if (action.type === clearHealthData.type) {
+    state = {
+      ...state,
+      settings: undefined,
+      meals: undefined,
+      mood: undefined,
+      workouts: undefined,
+      habits: undefined,
+      reminders: undefined,
+      sleep: undefined,
+    };
+  }
+
+  return appReducer(state, action);
+};
+
 export const store = configureStore({
-  reducer: {
-    settings: settingsReducer,
-    meals: mealsReducer,
-    mood: moodReducer,
-    workouts: workoutReducer,
-    habits: habitReducer,
-    reminders: reminderReducer,
-    auth: authReducer,
-    sleep: sleepReducer,
-  },
+  reducer: rootReducer,
   preloadedState,
 });
 
