@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./index.css";
 import "./App.css";
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
@@ -31,8 +31,12 @@ function App() {
   const hideSidebar =
     location.pathname === "/login" || location.pathname === "/signup";
 
+  useEffect(() => {
+    document.documentElement.classList.toggle("dark", theme === "dark");
+  }, [theme]);
+
   return (
-    <div className={theme === "dark" ? "bg-gray-900 text-white" : "bg-gray-50"}>
+    <div className="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white min-h-screen">
       <div className="flex items-start min-h-screen">
         {!hideSidebar && <Sidebar />}
 
