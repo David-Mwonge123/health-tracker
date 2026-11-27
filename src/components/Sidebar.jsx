@@ -15,7 +15,7 @@ function Sidebar() {
     }`;
 
   return (
-    <div className="w-64 h-screen sticky top-0 shrink-0 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700 hidden md:flex flex-col p-5 overflow-y-auto">
+    <div className="w-64 h-screen sticky top-0 shrink-0 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700 flex flex-col p-5 overflow-y-auto">
       {/* Logo */}
       <div className="flex items-center gap-3 mb-10">
         <h1 className="text-2xl font-bold text-green-700 dark:text-green-400">
