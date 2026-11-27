@@ -86,7 +86,7 @@ All data is stored locally in the browser using Redux + localStorage, so the app
 ### Mercy — Workouts (CRUD) + Sleep Log + UI Styling
 - Workouts: Add / edit / delete workout, type, duration, intensity, weekly total
 - Sleep Log: Bedtime, wake time, hours, quality, average sleep
-- UI: Styled Navbar + global CSS
+- UI: Styled Sidebar + global CSS
 
 ### Noah — Meals & Water + Mood + Progress
 - Meals & Water: Water counter +/-, add meal, list today's meals
